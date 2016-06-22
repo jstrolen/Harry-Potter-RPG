@@ -1,0 +1,22 @@
+<effects version="1.0">
+    <effect>
+        <id>0</id>
+        <name>destroy</name>
+        <title>Destroy</title>
+        <description>Destroy</description>
+    </effect>
+
+    <effect>
+        <id>1</id>
+        <name>extinguish</name>
+        <title>Extinguish</title>
+        <description>Extinguish</description>
+    </effect>
+
+    <effect>
+        <id>2</id>
+        <name>ignite</name>
+        <title>Ignite</title>
+        <description>Ignite</description>
+    </effect>
+</effects>

@@ -1,0 +1,34 @@
+<objectTransforms version="1.0">
+    <transforms>
+        <transform>
+            <id>0</id>
+            <name>destroyCabinet</name>
+            <title>Destroy Cabinet</title>
+            <description>Destroy Cabinet</description>
+            <sourceObject>0</sourceObject>
+            <targetObject>-1</targetObject>
+            <durability>1</durability>
+            <transformEffects>
+                <transformEffect>0</transformEffect>
+            </transformEffects>
+            <antitransformEffects></antitransformEffects>
+        </transform>
+
+        <transform>
+            <id>1</id>
+            <name>burnCabinet</name>
+            <title>Burn Cabinet</title>
+            <description>Burn Cabinet</description>
+            <sourceObject>0</sourceObject>
+            <targetObject>-1</targetObject>
+            <durability>100</durability>
+            <transformEffects>
+                <transformEffect>2</transformEffect>
+            </transformEffects>
+            <antitransformEffects>
+                <transformEffect>1</transformEffect>
+            </antitransformEffects>
+        </transform>
+
+    </transforms>
+</objectTransforms>

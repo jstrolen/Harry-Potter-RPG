@@ -1,0 +1,321 @@
+<objects version="1.0">
+    <blockSize>25</blockSize>
+    <sprite>
+        <path>images/blocks.png</path>
+        <tileSize>50</tileSize>
+    </sprite>
+
+    <objectList>
+        <object>
+            <id>0</id>
+            <name>border</name>
+            <title>Border</title>
+            <description>Border</description>
+            <hittable>true</hittable>
+            <crossable>false</crossable>
+            <flyable>false</flyable>
+            <color>
+                <r>0</r>
+                <g>0</g>
+                <b>0</b>
+            </color>
+
+            <tileSize>
+                <width>50</width>
+                <height>50</height>
+            </tileSize>
+            <image>
+                <x>0</x>
+                <y>0</y>
+            </image>
+        </object>
+
+        <object>
+            <id>1</id>
+            <name>Sand</name>
+            <title>Sand</title>
+            <description>Sand</description>
+            <hittable>false</hittable>
+            <crossable>true</crossable>
+            <flyable>true</flyable>
+            <color>
+                <r>255</r>
+                <g>153</g>
+                <b>0</b>
+            </color>
+
+            <tileSize>
+                <width>50</width>
+                <height>50</height>
+            </tileSize>
+            <image>
+                <x>1</x>
+                <y>0</y>
+            </image>
+        </object>
+
+        <object>
+            <id>2</id>
+            <name>rock</name>
+            <title>Rock</title>
+            <description>Rock</description>
+            <hittable>true</hittable>
+            <crossable>false</crossable>
+            <flyable>true</flyable>
+            <color>
+                <r>150</r>
+                <g>150</g>
+                <b>150</b>
+            </color>
+
+            <tileSize>
+                <width>50</width>
+                <height>50</height>
+            </tileSize>
+            <image>
+                <x>2</x>
+                <y>0</y>
+            </image>
+        </object>
+
+        <object>
+            <id>3</id>
+            <name>burningRock</name>
+            <title>Burning Rock</title>
+            <description>Burning Rock</description>
+            <hittable>true</hittable>
+            <crossable>false</crossable>
+            <flyable>true</flyable>
+            <color>
+                <r>255</r>
+                <g>0</g>
+                <b>0</b>
+            </color>
+
+            <tileSize>
+                <width>50</width>
+                <height>50</height>
+            </tileSize>
+            <image>
+                <x>3</x>
+                <y>0</y>
+            </image>
+        </object>
+
+        <object>
+            <id>4</id>
+            <name>white</name>
+            <title>White</title>
+            <description>White</description>
+            <hittable>false</hittable>
+            <crossable>true</crossable>
+            <flyable>true</flyable>
+            <color>
+                <r>255</r>
+                <g>255</g>
+                <b>255</b>
+            </color>
+
+            <tileSize>
+                <width>50</width>
+                <height>50</height>
+            </tileSize>
+            <image>
+                <x>4</x>
+                <y>0</y>
+            </image>
+        </object>
+
+        <object>
+            <id>5</id>
+            <name>black</name>
+            <title>Black</title>
+            <description>Black</description>
+            <hittable>false</hittable>
+            <crossable>true</crossable>
+            <flyable>true</flyable>
+            <color>
+                <r>0</r>
+                <g>0</g>
+                <b>0</b>
+            </color>
+
+            <tileSize>
+                <width>50</width>
+                <height>50</height>
+            </tileSize>
+            <image>
+                <x>5</x>
+                <y>0</y>
+            </image>
+        </object>
+
+        <object>
+            <id>6</id>
+            <name>grass</name>
+            <title>Grass</title>
+            <description>Grass</description>
+            <hittable>false</hittable>
+            <crossable>true</crossable>
+            <flyable>true</flyable>
+            <color>
+                <r>0</r>
+                <g>255</g>
+                <b>0</b>
+            </color>
+
+            <tileSize>
+                <width>50</width>
+                <height>50</height>
+            </tileSize>
+            <image>
+                <x>6</x>
+                <y>0</y>
+            </image>
+        </object>
+
+        <object>
+            <id>7</id>
+            <name>hedge</name>
+            <title>Hedge</title>
+            <description>Hedge</description>
+            <hittable>true</hittable>
+            <crossable>false</crossable>
+            <flyable>true</flyable>
+            <color>
+                <r>50</r>
+                <g>150</g>
+                <b>50</b>
+            </color>
+
+            <tileSize>
+                <width>50</width>
+                <height>50</height>
+            </tileSize>
+            <image>
+                <x>7</x>
+                <y>0</y>
+            </image>
+        </object>
+
+        <object>
+            <id>8</id>
+            <name>water</name>
+            <title>Water</title>
+            <description>Water</description>
+            <hittable>false</hittable>
+            <crossable>false</crossable>
+            <flyable>true</flyable>
+            <color>
+                <r>0</r>
+                <g>0</g>
+                <b>255</b>
+            </color>
+
+            <tileSize>
+                <width>50</width>
+                <height>50</height>
+            </tileSize>
+            <image>
+                <x>8</x>
+                <y>0</y>
+            </image>
+        </object>
+
+        <object>
+            <id>9</id>
+            <name>grayWall</name>
+            <title>Gray Wall</title>
+            <description>Gray Wall</description>
+            <hittable>false</hittable>
+            <crossable>true</crossable>
+            <flyable>true</flyable>
+            <color>
+                <r>200</r>
+                <g>200</g>
+                <b>200</b>
+            </color>
+
+            <tileSize>
+                <width>50</width>
+                <height>50</height>
+            </tileSize>
+            <image>
+                <x>9</x>
+                <y>0</y>
+            </image>
+        </object>
+
+        <object>
+            <id>10</id>
+            <name>parquet</name>
+            <title>Parquet</title>
+            <description>Parquet</description>
+            <hittable>false</hittable>
+            <crossable>true</crossable>
+            <flyable>true</flyable>
+            <color>
+                <r>120</r>
+                <g>50</g>
+                <b>50</b>
+            </color>
+
+            <tileSize>
+                <width>50</width>
+                <height>50</height>
+            </tileSize>
+            <image>
+                <x>0</x>
+                <y>1</y>
+            </image>
+        </object>
+
+        <object>
+            <id>11</id>
+            <name>brownWall</name>
+            <title>Brown Wall</title>
+            <description>Brown Wall</description>
+            <hittable>true</hittable>
+            <crossable>false</crossable>
+            <flyable>false</flyable>
+            <color>
+                <r>140</r>
+                <g>60</g>
+                <b>0</b>
+            </color>
+
+            <tileSize>
+                <width>50</width>
+                <height>50</height>
+            </tileSize>
+            <image>
+                <x>1</x>
+                <y>1</y>
+            </image>
+        </object>
+
+        <object>
+            <id>12</id>
+            <name>teleportation</name>
+            <title>Teleportation</title>
+            <description>Teleportation</description>
+            <hittable>false</hittable>
+            <crossable>true</crossable>
+            <flyable>true</flyable>
+            <color>
+                <r>220</r>
+                <g>100</g>
+                <b>40</b>
+            </color>
+
+            <tileSize>
+                <width>50</width>
+                <height>50</height>
+            </tileSize>
+            <image>
+                <x>2</x>
+                <y>1</y>
+            </image>
+        </object>
+    </objectList>
+</objects>

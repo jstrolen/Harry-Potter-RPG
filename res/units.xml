@@ -1,0 +1,40 @@
+<Units version="1.0">
+    <sprite>
+        <path>images/units.png</path>
+        <tileSize>100</tileSize>
+    </sprite>
+
+    <unitList>
+        <Unit>
+            <id>0</id>
+            <name>person</name>
+            <title>Person</title>
+            <description>Person</description>
+            <speed>5.0</speed>
+            <health>100.0</health>
+            <spells>
+                <spellID>0</spellID>
+                <spellID>1</spellID>
+            </spells>
+            <objectSize>
+                <width>25</width>
+                <height>25</height>
+            </objectSize>
+            <color>
+                <r>200</r>
+                <g>100</g>
+                <b>0</b>
+            </color>
+
+            <tileSize>
+                <width>100</width>
+                <height>100</height>
+            </tileSize>
+            <image>
+                <x>0</x>
+                <y>0</y>
+            </image>
+        </Unit>
+
+    </unitList>
+</Units>

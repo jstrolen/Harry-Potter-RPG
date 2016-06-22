@@ -1,0 +1,61 @@
+<unitTransforms version="1.0">
+    <transforms>
+        <transform>
+            <id>0</id>
+            <name>hang</name>
+            <title>Hang</title>
+            <description>Hang</description>
+            <excludes></excludes>
+            <changes>
+                <change value="1" duration="5">REVERSE</change>
+                <change value="0" duration="6">SPEED</change>
+            </changes>
+        </transform>
+
+        <transform>
+            <id>1</id>
+            <name>heal</name>
+            <title>Heal</title>
+            <description>Heal</description>
+            <excludes></excludes>
+            <changes>
+                <change value="50" duration="2">HEAL</change>
+            </changes>
+        </transform>
+
+        <transform>
+            <id>2</id>
+            <name>immobilize</name>
+            <title>Immobilize</title>
+            <description>Immobilize</description>
+            <excludes></excludes>
+            <changes>
+                <change value="0" duration="10">SPEED</change>
+            </changes>
+        </transform>
+
+        <transform>
+            <id>3</id>
+            <name>stopCast</name>
+            <title>Stop Cast</title>
+            <description>Stop Cast</description>
+            <excludes></excludes>
+            <changes>
+                <change value="0" duration="15">CAST_SPEED</change>
+            </changes>
+        </transform>
+
+        <transform>
+            <id>3</id>
+            <name>injure</name>
+            <title>Injure</title>
+            <description>Injure</description>
+            <excludes></excludes>
+            <changes>
+                <change value="25" duration="1">INJURE</change>
+            </changes>
+        </transform>
+
+
+    </transforms>
+</unitTransforms>

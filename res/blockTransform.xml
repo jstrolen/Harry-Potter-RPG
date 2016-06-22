@@ -1,0 +1,123 @@
+<objectTransforms version="1.0">
+    <transforms>
+        <transform>
+            <id>0</id>
+            <name>destroyRock</name>
+            <title>Destroy Rock</title>
+            <description>Destroy Rock</description>
+            <sourceObject>2</sourceObject>
+            <targetObject>1</targetObject>
+            <durability>1</durability>
+            <transformEffects>
+                <transformEffect>0</transformEffect>
+            </transformEffects>
+            <antitransformEffects></antitransformEffects>
+        </transform>
+
+        <transform>
+            <id>1</id>
+            <name>burnRock</name>
+            <title>Burn Rock</title>
+            <description>Burn Rock</description>
+            <sourceObject>2</sourceObject>
+            <targetObject>3</targetObject>
+            <durability>100</durability>
+            <transformEffects>
+                <transformEffect>2</transformEffect>
+            </transformEffects>
+            <antitransformEffects>
+                <transformEffect>1</transformEffect>
+            </antitransformEffects>
+        </transform>
+
+        <transform>
+            <id>2</id>
+            <name>destroyBurningRock</name>
+            <title>Destroy Burning Rock</title>
+            <description>Destroy Burning Rock</description>
+            <sourceObject>3</sourceObject>
+            <targetObject>1</targetObject>
+            <durability>1</durability>
+            <transformEffects>
+                <transformEffect>0</transformEffect>
+            </transformEffects>
+            <antitransformEffects></antitransformEffects>
+        </transform>
+
+        <transform>
+            <id>3</id>
+            <name>extinguishRock</name>
+            <title>Extinguish Rock</title>
+            <description>Extinguish Rock</description>
+            <sourceObject>3</sourceObject>
+            <targetObject>2</targetObject>
+            <durability>100</durability>
+            <transformEffects>
+                <transformEffect>1</transformEffect>
+            </transformEffects>
+            <antitransformEffects>
+                <transformEffect>2</transformEffect>
+            </antitransformEffects>
+        </transform>
+
+        <transform>
+            <id>4</id>
+            <name>destroyHedge</name>
+            <title>Destroy Hedge</title>
+            <description>Destroy Hedge</description>
+            <sourceObject>7</sourceObject>
+            <targetObject>6</targetObject>
+            <durability>1</durability>
+            <transformEffects>
+                <transformEffect>0</transformEffect>
+            </transformEffects>
+            <antitransformEffects></antitransformEffects>
+        </transform>
+
+        <transform>
+            <id>5</id>
+            <name>burnHedge</name>
+            <title>Burn Hedge</title>
+            <description>Burn Hedge</description>
+            <sourceObject>7</sourceObject>
+            <targetObject>1</targetObject>
+            <durability>100</durability>
+            <transformEffects>
+                <transformEffect>2</transformEffect>
+            </transformEffects>
+            <antitransformEffects>
+                <transformEffect>1</transformEffect>
+            </antitransformEffects>
+        </transform>
+
+        <transform>
+            <id>6</id>
+            <name>destroyBrownWall</name>
+            <title>Destroy Brown Wall</title>
+            <description>Destroy Brown Wall</description>
+            <sourceObject>11</sourceObject>
+            <targetObject>1</targetObject>
+            <durability>1</durability>
+            <transformEffects>
+                <transformEffect>0</transformEffect>
+            </transformEffects>
+            <antitransformEffects></antitransformEffects>
+        </transform>
+
+        <transform>
+            <id>7</id>
+            <name>igniteBrownWall</name>
+            <title>Ignite Brown Wall</title>
+            <description>Ignite Brown Wall</description>
+            <sourceObject>11</sourceObject>
+            <targetObject>1</targetObject>
+            <durability>100</durability>
+            <transformEffects>
+                <transformEffect>2</transformEffect>
+            </transformEffects>
+            <antitransformEffects>
+                <transformEffect>1</transformEffect>
+            </antitransformEffects>
+        </transform>
+    </transforms>
+</objectTransforms>
