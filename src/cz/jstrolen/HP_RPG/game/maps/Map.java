@@ -7,7 +7,7 @@ import cz.jstrolen.HP_RPG.game.entities.objects.Teleport;
 import cz.jstrolen.HP_RPG.game.entities.spells.Spell;
 import cz.jstrolen.HP_RPG.game.entities.units.Unit;
 import cz.jstrolen.HP_RPG.game.entities.units.UnitFactory;
-import cz.jstrolen.HP_RPG.game.support.Input;
+import cz.jstrolen.HP_RPG.support.Input;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -81,6 +81,12 @@ public class Map {
 
 	public Block getBlockAtLocation(double posX, double posY) {
 		return blocks[(int) posY / ObjectFactory.getBlockSize()][(int) posX / ObjectFactory.getBlockSize()];
+	}
+
+	public void changeBlock(Block originalBlock, Block newBlock) {
+		int positionX = (int) (originalBlock.getPositionX() / ObjectFactory.getBlockSize());
+		int positionY = (int) (originalBlock.getPositionY() / ObjectFactory.getBlockSize());
+		blocks[positionY][positionX] = newBlock;
 	}
 
 	public String getName() {

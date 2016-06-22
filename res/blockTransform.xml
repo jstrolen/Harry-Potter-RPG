@@ -81,7 +81,7 @@
             <description>Burn Hedge</description>
             <sourceObject>7</sourceObject>
             <targetObject>1</targetObject>
-            <durability>100</durability>
+            <durability>20</durability>
             <transformEffects>
                 <transformEffect>2</transformEffect>
             </transformEffects>

@@ -5,7 +5,8 @@
             <name>hang</name>
             <title>Hang</title>
             <description>Hang</description>
-            <excludes></excludes>
+            <transformEffects />
+            <excludes />
             <changes>
                 <change value="1" duration="5">REVERSE</change>
                 <change value="0" duration="6">SPEED</change>
@@ -17,7 +18,8 @@
             <name>heal</name>
             <title>Heal</title>
             <description>Heal</description>
-            <excludes></excludes>
+            <transformEffects />
+            <excludes />
             <changes>
                 <change value="50" duration="2">HEAL</change>
             </changes>
@@ -28,7 +30,8 @@
             <name>immobilize</name>
             <title>Immobilize</title>
             <description>Immobilize</description>
-            <excludes></excludes>
+            <transformEffects />
+            <excludes />
             <changes>
                 <change value="0" duration="10">SPEED</change>
             </changes>
@@ -39,7 +42,8 @@
             <name>stopCast</name>
             <title>Stop Cast</title>
             <description>Stop Cast</description>
-            <excludes></excludes>
+            <transformEffects />
+            <excludes />
             <changes>
                 <change value="0" duration="15">CAST_SPEED</change>
             </changes>
@@ -50,7 +54,8 @@
             <name>injure</name>
             <title>Injure</title>
             <description>Injure</description>
-            <excludes></excludes>
+            <transformEffects />
+            <excludes />
             <changes>
                 <change value="25" duration="1">INJURE</change>
             </changes>

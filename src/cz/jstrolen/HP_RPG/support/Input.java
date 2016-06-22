@@ -1,4 +1,4 @@
-package cz.jstrolen.HP_RPG.game.support;
+package cz.jstrolen.HP_RPG.support;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -8,7 +8,7 @@ import java.io.File;
  * Created by Josef Stroleny
  */
 public class Input {
-	private Input() {};
+	private Input() {}
 
 	public static File getFile(String s) {
 		try {

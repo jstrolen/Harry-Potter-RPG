@@ -1,7 +1,7 @@
 <spells version="1.0">
     <sprite>
         <path>images/spells.png</path>
-        <tileSize>50</tileSize>
+        <tileSize>100</tileSize>
     </sprite>
 
     <spellList>
@@ -26,8 +26,8 @@
             </color>
 
             <tileSize>
-                <width>50</width>
-                <height>50</height>
+                <width>100</width>
+                <height>100</height>
             </tileSize>
             <image>
                 <x>0</x>
@@ -40,10 +40,10 @@
             <name>incendio</name>
             <title>Incendio</title>
             <description>Incedio</description>
-            <distanceVitality>200</distanceVitality>
-            <speed>4.0</speed>
-            <castTime>1.0</castTime>
-            <dispersion>2.0</dispersion>
+            <distanceVitality>100</distanceVitality>
+            <speed>8.0</speed>
+            <castTime>2.0</castTime>
+            <dispersion>0.3</dispersion>
             <effects>
                 <effect>2</effect>
             </effects>
@@ -58,8 +58,8 @@
             </color>
 
             <tileSize>
-                <width>50</width>
-                <height>50</height>
+                <width>100</width>
+                <height>100</height>
             </tileSize>
             <image>
                 <x>1</x>
@@ -72,8 +72,8 @@
             <name>protego</name>
             <title>Protego</title>
             <description>Protego</description>
-            <distanceVitality>50</distanceVitality>
-            <speed>0.5</speed>
+            <distanceVitality>100</distanceVitality>
+            <speed>10</speed>
             <castTime>10</castTime>
             <dispersion>0</dispersion>
             <effects></effects>
@@ -88,8 +88,8 @@
             </color>
 
             <tileSize>
-                <width>50</width>
-                <height>50</height>
+                <width>100</width>
+                <height>100</height>
             </tileSize>
             <image>
                 <x>2</x>
@@ -120,8 +120,8 @@
             </color>
 
             <tileSize>
-                <width>50</width>
-                <height>50</height>
+                <width>100</width>
+                <height>100</height>
             </tileSize>
             <image>
                 <x>3</x>
@@ -150,8 +150,8 @@
             </color>
 
             <tileSize>
-                <width>50</width>
-                <height>50</height>
+                <width>100</width>
+                <height>100</height>
             </tileSize>
             <image>
                 <x>4</x>

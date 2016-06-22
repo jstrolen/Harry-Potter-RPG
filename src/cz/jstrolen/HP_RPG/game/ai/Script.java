@@ -1,6 +1,6 @@
 package cz.jstrolen.HP_RPG.game.ai;
 
-import cz.jstrolen.HP_RPG.game.World;
+import cz.jstrolen.HP_RPG.game.maps.World;
 import cz.jstrolen.HP_RPG.game.entities.units.Unit;
 
 public class Script extends AI {

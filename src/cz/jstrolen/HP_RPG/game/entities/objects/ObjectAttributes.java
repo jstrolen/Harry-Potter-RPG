@@ -14,7 +14,7 @@ public class ObjectAttributes extends AAttributes {
     private final boolean HITTABLE;
     private final boolean CROSSABLE;
     private final boolean FLYABLE;
-    private final Set<ObjectTransform> TRANSFORMS;
+    private final Set<Integer> TRANSFORMS;
 
     public ObjectAttributes(int id, String name, String title, String description, Color color, BufferedImage image, double sizeX, double sizeY,
                             boolean hittable, boolean crossable, boolean flyable) {
@@ -37,5 +37,5 @@ public class ObjectAttributes extends AAttributes {
         return FLYABLE;
     }
 
-    public Set<ObjectTransform> getTransform() { return TRANSFORMS; }
+    public Set<Integer> getTransform() { return TRANSFORMS; }
 }

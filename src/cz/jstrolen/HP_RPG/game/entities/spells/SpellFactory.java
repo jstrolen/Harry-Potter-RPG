@@ -1,7 +1,7 @@
 package cz.jstrolen.HP_RPG.game.entities.spells;
 
 import cz.jstrolen.HP_RPG.game.entities.units.Unit;
-import cz.jstrolen.HP_RPG.game.support.Input;
+import cz.jstrolen.HP_RPG.support.Input;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -79,12 +79,18 @@ public class SpellFactory {
         }
     }
 
-    public static Spell getSpell(Unit caster, int id, double orientation) {
-        double startX = caster.getPositionX() + caster.getSizeX() / 2;
-        double startY = caster.getPositionY() + caster.getSizeY() / 2;
+    public static Spell getSpell(Unit caster, double orientation) {
+        int id = caster.getActualSpell();
+        if (!SPELL_TYPES.containsKey(id)) return null;
         SpellAttributes attributes = SPELL_TYPES.get(id);
+        double startX = caster.getPositionX() + caster.getSizeX() / 2 - attributes.getSizeX() / 2;
+        double startY = caster.getPositionY() + caster.getSizeY() / 2 - attributes.getSizeY() / 2;
         if (attributes.getDispersion() > 0) orientation += ((2 * Math.random()) - 1) * attributes.getDispersion();
 
         return new Spell(caster, startX, startY, orientation, attributes);
+    }
+
+    public static SpellAttributes getSpellAttributes(int id) {
+        return SPELL_TYPES.get(id);
     }
 }

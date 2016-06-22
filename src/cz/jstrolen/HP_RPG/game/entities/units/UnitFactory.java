@@ -3,7 +3,7 @@ package cz.jstrolen.HP_RPG.game.entities.units;
 import cz.jstrolen.HP_RPG.game.entities.units.transforms.UnitChange;
 import cz.jstrolen.HP_RPG.game.entities.units.transforms.UnitTransform;
 import cz.jstrolen.HP_RPG.game.entities.units.transforms.UnitTransformEffect;
-import cz.jstrolen.HP_RPG.game.support.Input;
+import cz.jstrolen.HP_RPG.support.Input;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -94,22 +94,28 @@ public class UnitFactory {
                 String title = nodes.item(5).getTextContent();
                 String description = nodes.item(7).getTextContent();
 
+                Set<Integer> effects = new HashSet<>();
+                NodeList effectList = nodes.item(9).getChildNodes();
+                for (int j = 1; i < effectList.getLength(); j += 2) {
+                    effects.add(Integer.valueOf(effectList.item(j).getTextContent()));
+                }
+
                 Set<Integer> excludes = new HashSet<>();
-                NodeList excludeList = nodes.item(9).getChildNodes();
-                for (int j = 1; i < excludeList.getLength(); i += 2) {
+                NodeList excludeList = nodes.item(11).getChildNodes();
+                for (int j = 1; j < excludeList.getLength(); j += 2) {
                     excludes.add(Integer.valueOf(excludeList.item(j).getTextContent()));
                 }
 
                 List<UnitTransformEffect> transformTypes = new ArrayList<>();
-                NodeList transformList = nodes.item(11).getChildNodes();
-                for (int j = 1; i < transformList.getLength(); i += 2) {
+                NodeList transformList = nodes.item(13).getChildNodes();
+                for (int j = 1; j < transformList.getLength(); j += 2) {
                     double value = Double.valueOf(transformList.item(j).getAttributes().item(0).getTextContent());
                     double duration = Double.valueOf(transformList.item(j).getAttributes().item(1).getTextContent());
                     String text = transformList.item(j).getTextContent();
                     transformTypes.add(new UnitTransformEffect(text, value, duration));
                 }
 
-                UnitTransform ut = new UnitTransform(id, name, title, description, transformTypes, excludes);
+                UnitTransform ut = new UnitTransform(id, name, title, description, effects, transformTypes, excludes);
                 UNIT_TRANSFORMS.put(id, ut);
             }
         } catch (Exception e) {

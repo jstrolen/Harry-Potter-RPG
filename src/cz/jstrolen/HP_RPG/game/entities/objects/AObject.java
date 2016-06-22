@@ -9,6 +9,7 @@ import java.awt.*;
  */
 public abstract class AObject extends AEntity {
 	private final ObjectAttributes objectAttributes;
+	private final int[] TRANSFORMS;
 	private int rotation;
 	private Teleport teleport;
 	
@@ -16,6 +17,7 @@ public abstract class AObject extends AEntity {
 		super(positionX, positionY, objectAttributes.getSizeX(), objectAttributes.getSizeY());
 		this.objectAttributes = objectAttributes;
 		this.rotation = 0;
+		this.TRANSFORMS = new int[objectAttributes.getTransform().size()];
 	}
 
 	@Override
@@ -64,4 +66,8 @@ public abstract class AObject extends AEntity {
 	public void setTeleport(Teleport teleport) { this.teleport = teleport; }
 
 	public Teleport getTeleport() { return teleport; }
+
+	public int[] getTransforms() {
+		return TRANSFORMS;
+	}
 }

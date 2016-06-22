@@ -23,7 +23,12 @@ public class Spell extends AEntity {
 		this.spellAttributes = spellAttributes;
 		this.remainingDistance = spellAttributes.getDistanceVitality();
 	}
-	
+
+	@Override
+	public AEntity hit(Spell spell) {
+		return null;
+	}
+
 	@Override
 	public void draw(Graphics2D g) {
 		if (spellAttributes.getImage() == null) {
@@ -33,19 +38,6 @@ public class Spell extends AEntity {
 			g.drawImage(spellAttributes.getImage(), (int) getPositionX(), (int) getPositionY(), (int) getSizeX(), (int) getSizeY(), null);
 		}
 	}
-
-	/* TODO
-	public void loading(Graphics2D g, Unit Unit) {
-		int startX = (int) (Unit.getPositionX());
-		int lengthX = (int) (Unit.getSIZE_X());
-		int startY = (int) (Unit.getPositionY() + Unit.getSIZE_Y() + Unit.BAR_HEIGHT);
-		
-		g.setColor(getColor());
-		g.drawRect(startX, startY, lengthX, Spell.BAR_HEIGHT);
-		int length = (int) (((double) castLoading / castTime) * lengthX);
-		g.fillRect(startX, startY, length, Spell.BAR_HEIGHT);
-	}
-	*/
 
 	public boolean move() {
 		double difX = Math.cos(orientation) * spellAttributes.getSpeed();
@@ -69,4 +61,6 @@ public class Spell extends AEntity {
 	public Unit getCaster() {
 		return caster;
 	}
+
+	public SpellAttributes getAttributes() { return spellAttributes; }
 }

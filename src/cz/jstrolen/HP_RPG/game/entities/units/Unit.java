@@ -1,7 +1,10 @@
 package cz.jstrolen.HP_RPG.game.entities.units;
 
+import cz.jstrolen.HP_RPG.game.Settings;
 import cz.jstrolen.HP_RPG.game.ai.AI;
 import cz.jstrolen.HP_RPG.game.entities.AEntity;
+import cz.jstrolen.HP_RPG.game.entities.spells.Spell;
+import cz.jstrolen.HP_RPG.game.entities.spells.SpellFactory;
 import cz.jstrolen.HP_RPG.game.entities.units.transforms.UnitChange;
 
 import java.awt.*;
@@ -17,13 +20,17 @@ public class Unit extends AEntity implements Runnable {
 	private double health;
 	private List<UnitChange> effects;
 	private AI ai;
-	
+
+	private int actualSpell;
+	private double castTime;
+
 	public Unit(double positionX, double positionY, UnitAttributes unitAttributes) {
 		super(positionX, positionY, unitAttributes.getSizeX(), unitAttributes.getSizeY());
 		this.unitAttributes = unitAttributes;
 		this.speed = unitAttributes.getSpeed();
 		this.health = unitAttributes.getHealth();
 		effects = new ArrayList<>();
+		actualSpell = unitAttributes.getSpells().isEmpty() ? -1 : 0;
 	}
 
 	@Override
@@ -54,70 +61,68 @@ public class Unit extends AEntity implements Runnable {
 		else {
 			g.drawImage(unitAttributes.getImage(), (int) getPositionX(), (int) getPositionY(), (int) getSizeX(), (int) getSizeY(), null);
 		}
+	}
 
-		/* TODO
+	public void drawHealthBar(Graphics2D g) {
 		int startX = (int) getPositionX();
-		int lengthX = (int) unitAttributes.getSIZE_X();
-		int startY = (int) (getPositionY() + unitAttributes.getSIZE_Y());
-		g.setColor(HEALTH);
-		g.drawRect(startX, startY, lengthX, Unit.BAR_HEIGHT);
-		int length = (int) (((double) health / MAX_HEALTH) * lengthX);
-		g.fillRect(startX, startY, length, Unit.BAR_HEIGHT);
-		*/
+		int sizeX = (int) getSizeX();
+		int startY = (int) (getPositionY() + getSizeY()) + Settings.HEALTH_BAR_SPACE;
+		g.drawRect(startX, startY, sizeX, Settings.HEALTH_BAR_HEIGHT);
+		int length = (int) ((health / unitAttributes.getHealth()) * sizeX);
+		g.fillRect(startX, startY, length, Settings.HEALTH_BAR_HEIGHT);
 	}
 
-	/* TODO
-	public void cast(double vector, World map) {
-		if (!canCastNow || !this.isCanCast()) return;
-		if (levitating != null) {
-			levitating = null;
-			return;
-		}
-		if (actual == null) {
-			actual = Spell.getSpell(this, spellId, vector);
-			map.addCasting(actual);
-		}
-
-		boolean exist = false;
-		if (actual != null ) exist = actual.reload();
-
-		if (exist) {
-			actual.setPositionX(this.getPositionX() + this.getSIZE_X() / 2 - actual.getSIZE_X() / 2);
-			actual.setPositionY(this.getPositionY() + this.getSIZE_Y() / 2 - actual.getSIZE_Y() / 2);
-			actual.setOrientation(vector);
-			map.removeCasting(actual);
-			map.newSpell(actual);
-			actual = null;
-		}
+	public void drawSpellBar(Graphics2D g) {
+		int startX = (int) getPositionX();
+		int sizeX = (int) getSizeX();
+		int startY = (int) (getPositionY() + getSizeY()) + Settings.SPELL_BAR_SPACE;
+		g.drawRect(startX, startY, sizeX, Settings.SPELL_BAR_HEIGHT);
+		int length = (int) ((castTime / SpellFactory.getSpellAttributes(actualSpell).getCastTime()) * sizeX);
+		g.fillRect(startX, startY, length, Settings.SPELL_BAR_HEIGHT);
 	}
-	*/
 
-	/* TODO
-	public void move(double difX, double difY, World map) {
-		if (levitating == null) {
-			double[] position = map.tryMove(this, this.getPositionX(), this.getPositionY(), difX, difY, this.getSIZE_X(), this.getSIZE_Y());
-			setPositionX(this.getPositionX() + position[0]);
-			setPositionY(this.getPositionY() + position[1]);
-		}
-		else {
-			double[] position = map.tryMove(levitating, levitating.getPositionX(), levitating.getPositionY(), difX, difY, levitating.getSIZE_X(), levitating.getSIZE_Y());
-			levitating.setPositionX(levitating.getPositionX() + position[0]);
-			levitating.setPositionY(levitating.getPositionY() + position[1]);
-		}
+	@Override
+	public AEntity hit(Spell spell) {
+		return this;
 	}
-	*/
 
-	/* TODO
-	public void changeSpell(int i) {
-		if (i > 0) spellNumber++;
-		else spellNumber--;
-		
-		if (spellNumber >= this.getSpellCount()) spellNumber = 0;
-		else if (spellNumber < 0) spellNumber = this.getSpellCount() - 1;
-		
-		spellId = SPELL_IDS[spellNumber];
+	public boolean cast() {
+		castTime++;		//TODO
+		if (castTime >= SpellFactory.getSpellAttributes(actualSpell).getCastTime()) {
+			stopCast();
+			return true;
+		}
+		return false;
 	}
-	*/
+
+	public void stopCast() {
+		castTime = 0;
+	}
+
+	public void changeSpell(int newSpell) {
+		actualSpell = unitAttributes.getSpells().contains(newSpell) ? newSpell : actualSpell;
+	}
+
+	public void scrollSpell(boolean up) {
+		stopCast();
+		List<Integer> spellList = new ArrayList<>(unitAttributes.getSpells());
+		int index = 0; {
+			for (int i = 0; i < spellList.size(); i++) {
+				if (spellList.get(i).equals(actualSpell)) {
+					index = i;
+					break;
+				}
+			}
+		}
+		index = up ? index + 1 : index - 1;
+		if (index < 0) index = spellList.size() - 1;
+		else if (index >= spellList.size()) index = 0;
+		actualSpell = index;
+	}
+
+	public int getActualSpell() {
+		return actualSpell;
+	}
 
 	public double getSpeed() { return speed; }
 

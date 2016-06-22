@@ -1,6 +1,6 @@
 package cz.jstrolen.HP_RPG.game.entities.objects;
 
-import cz.jstrolen.HP_RPG.game.support.Input;
+import cz.jstrolen.HP_RPG.support.Input;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -28,6 +28,10 @@ public class ObjectFactory {
 	private static final Map<Integer, ObjectAttributes> BLOCK_TYPES = new HashMap<>();
 	private static final Map<Integer, ObjectAttributes> ITEM_TYPES = new HashMap<>();
 
+	private static final Map<Integer, ObjectTransform> BLOCK_TRANSFORMS = new HashMap<>();
+	private static final Map<Integer, ObjectTransform> ITEM_TRANSFORMS = new HashMap<>();
+
+
 	private static int BLOCK_SIZE;
 
 	static {
@@ -37,7 +41,7 @@ public class ObjectFactory {
 		loadTransforms(false);
 	}
 
-	private static void loadObjects(boolean blocks) {		//TODO
+	private static void loadObjects(boolean blocks) {
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -60,9 +64,9 @@ public class ObjectFactory {
 				String name = nodes.item(3).getTextContent();
 				String title = nodes.item(5).getTextContent();
 				String description = nodes.item(7).getTextContent();
-				boolean hittable = nodes.item(9).getTextContent().equalsIgnoreCase("true") ? true : false;
-				boolean crossable = nodes.item(11).getTextContent().equalsIgnoreCase("true") ? true : false;
-				boolean flyable = nodes.item(13).getTextContent().equalsIgnoreCase("true") ? true : false;
+				boolean hittable = nodes.item(9).getTextContent().equalsIgnoreCase("true");
+				boolean crossable = nodes.item(11).getTextContent().equalsIgnoreCase("true");
+				boolean flyable = nodes.item(13).getTextContent().equalsIgnoreCase("true");
 
 				int index = 15;
 				double sizeX, sizeY;
@@ -117,19 +121,25 @@ public class ObjectFactory {
 
 				Set<Integer> transformTypes = new HashSet<>();
 				NodeList transformList = nodes.item(15).getChildNodes();
-				for (int j = 1; i < transformList.getLength(); i += 2) {
+				for (int j = 1; j < transformList.getLength(); j += 2) {
 					transformTypes.add(Integer.valueOf(transformList.item(j).getTextContent()));
 				}
 
 				Set<Integer> antitransformTypes = new HashSet<>();
 				NodeList antitransformList = nodes.item(17).getChildNodes();
-				for (int j = 1; i < antitransformList.getLength(); i += 2) {
+				for (int j = 1; j < antitransformList.getLength(); j += 2) {
 					antitransformTypes.add(Integer.valueOf(antitransformList.item(j).getTextContent()));
 				}
 
-				ObjectTransform t = new ObjectTransform(id, name, title, description, targetId, durability, transformTypes, antitransformTypes);
-				if (blocks) BLOCK_TYPES.get(sourceId).getTransform().add(t);
-				else ITEM_TYPES.get(sourceId).getTransform().add(t);
+				ObjectTransform t = new ObjectTransform(id, name, title, description, sourceId, targetId, durability, transformTypes, antitransformTypes);
+				if (blocks) {
+					BLOCK_TRANSFORMS.put(id, t);
+					BLOCK_TYPES.get(sourceId).getTransform().add(id);
+				}
+				else {
+					ITEM_TRANSFORMS.put(id, t);
+					ITEM_TYPES.get(sourceId).getTransform().add(id);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -137,9 +147,13 @@ public class ObjectFactory {
 		}
 	}
 	
-	public static Block getBlock(int id, int x, int y) { return new Block(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_TYPES.get(id)); }
+	public static Block getBlock(int id, int x, int y) { return BLOCK_TYPES.containsKey(id) ? new Block(x, y, BLOCK_TYPES.get(id)) : null; }
 
-	public static Item getItem(int id, int x, int y) { return new Item(x, y, ITEM_TYPES.get(id)); }
+	public static Item getItem(int id, int x, int y) { return ITEM_TYPES.containsKey(id) ? new Item(x, y, ITEM_TYPES.get(id)) : null; }
+
+	public static ObjectTransform getBlockTransforms(int id) { return BLOCK_TRANSFORMS.get(id); }
+
+	public static ObjectTransform getItemTransforms(int id) { return ITEM_TRANSFORMS.get(id); }
 
 	public static int getBlockSize() { return BLOCK_SIZE; }
 }

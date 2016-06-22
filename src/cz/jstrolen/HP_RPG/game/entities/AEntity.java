@@ -1,5 +1,7 @@
 package cz.jstrolen.HP_RPG.game.entities;
 
+import cz.jstrolen.HP_RPG.game.entities.spells.Spell;
+
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
@@ -7,6 +9,7 @@ import java.awt.geom.Rectangle2D;
  * Created by Josef Stroleny
  */
 public abstract class AEntity {
+    private final Rectangle2D BOUNDS;
     private double positionX;
     private double positionY;
     private double sizeX;
@@ -17,16 +20,20 @@ public abstract class AEntity {
         this.positionY = posY;
         this.sizeX = sizeX;
         this.sizeY = sizeY;
+        BOUNDS = new Rectangle2D.Double(posX, posY, sizeX, sizeY);
     }
 
     public Rectangle2D getBounds() {
-        return new Rectangle2D.Double(positionX, positionY, sizeX, sizeY);
+        return BOUNDS;
     }
+
+    public abstract AEntity hit(Spell spell);
 
     public abstract void draw(Graphics2D g);
 
     public void setPositionX(double posX) {
         this.positionX = posX;
+        this.BOUNDS.setRect(positionX, positionY, sizeX, sizeY);
     }
 
     public double getPositionX() {
@@ -35,6 +42,7 @@ public abstract class AEntity {
 
     public void setPositionY(double posY) {
         this.positionY = posY;
+        this.BOUNDS.setRect(positionX, positionY, sizeX, sizeY);
     }
 
     public double getPositionY() {
@@ -47,6 +55,7 @@ public abstract class AEntity {
 
     public void setSizeX(double sizeX) {
         this.sizeX = sizeX;
+        this.BOUNDS.setRect(positionX, positionY, sizeX, sizeY);
     }
 
     public double getSizeY() {
@@ -55,5 +64,6 @@ public abstract class AEntity {
 
     public void setSizeY(double sizeY) {
         this.sizeY = sizeY;
+        this.BOUNDS.setRect(positionX, positionY, sizeX, sizeY);
     }
 }

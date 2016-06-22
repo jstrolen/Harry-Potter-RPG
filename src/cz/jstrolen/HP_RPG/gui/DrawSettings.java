@@ -18,4 +18,7 @@ public class DrawSettings {
     public static final Font FONT = new Font("Serif", Font.BOLD, 12);
     public static final Color TEXT_COLOR = Color.BLACK;
     public static final Color INFO_TEXT = Color.GRAY;
+
+    public static final String CURSOR_PATH = "images/wand.png";
+    public static final String CURSOR_NAME = "Wand";
 }

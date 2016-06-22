@@ -1,6 +1,6 @@
 package cz.jstrolen.HP_RPG.game.entities.effects;
 
-import cz.jstrolen.HP_RPG.game.support.Input;
+import cz.jstrolen.HP_RPG.support.Input;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;

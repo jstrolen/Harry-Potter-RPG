@@ -2,14 +2,13 @@ package cz.jstrolen.HP_RPG.gui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 
 /**
  * Created by Josef Stroleny
  */
-public final class Game extends JFrame implements KeyListener, Runnable {
+public final class Game extends JFrame implements KeyListener, MouseListener, MouseWheelListener, Runnable {
 	private Thread gameThread;
 	private Display display;
 	private boolean running;
@@ -56,7 +55,9 @@ public final class Game extends JFrame implements KeyListener, Runnable {
 			now = System.nanoTime();
 			int updateCount = 0;
 			while( now - lastUpdateTime > TIME_BETWEEN_UPDATES && updateCount < MAX_UPDATES_BEFORE_RENDER ) {
+				//long nanoStart = System.nanoTime();
 				tick();
+				//System.out.println("Tick time: " + (System.nanoTime() - nanoStart));
 				lastUpdateTime += TIME_BETWEEN_UPDATES;
 				updateCount++;
 			}
@@ -64,7 +65,9 @@ public final class Game extends JFrame implements KeyListener, Runnable {
 				lastUpdateTime = now - TIME_BETWEEN_UPDATES;
 			}
 
+			//long nanoStart = System.nanoTime();
 			render();
+			//System.out.println("Render time: " + (System.nanoTime() - nanoStart));
 			lastRenderTime = now;
 			while ( now - lastRenderTime < TARGET_TIME_BETWEEN_RENDERS && now - lastUpdateTime < TIME_BETWEEN_UPDATES) {
 				Thread.yield();
@@ -104,8 +107,41 @@ public final class Game extends JFrame implements KeyListener, Runnable {
 		g.dispose();
 	}
 
-	public void setPaused(boolean paused) {
-		this.paused = paused;
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		display.getPlayer().scrollSpell(e.getWheelRotation() > 0);
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		if (e.getButton() == MouseEvent.BUTTON1) {
+			/*if (spellSelection) {		//TODO
+				for (int i = 0; i < spellFields.size(); i++) {
+					if (spellFields.get(i).contains(e.getPoint())) {
+						//player.setSpell(spellFields.get(i).getId());
+						spellSelection = false;
+						Display.this.Game.setPaused(spellSelection);
+						break;
+					}
+				}
+			}
+			else */
+			display.setMouseButtonLeft(true);
+		}
+		else if (e.getButton() == MouseEvent.BUTTON2) {
+			//spellSelection = true;
+			//Display.this.Game.setPaused(spellSelection); TODO
+		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		if (e.getButton() == MouseEvent.BUTTON1) {
+			/*if (!spellSelection) {	//TODO
+				mouseButton1 = false;
+			}*/
+			display.setMouseButtonLeft(false);
+		}
 	}
 
 	@Override
@@ -122,4 +158,13 @@ public final class Game extends JFrame implements KeyListener, Runnable {
 
 	@Override
 	public void keyTyped(KeyEvent arg) {}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {}
+
+	@Override
+	public void mouseExited(MouseEvent e) {}
 }

@@ -1,16 +1,13 @@
 package cz.jstrolen.HP_RPG.gui;
 
 import cz.jstrolen.HP_RPG.game.Settings;
-import cz.jstrolen.HP_RPG.game.World;
+import cz.jstrolen.HP_RPG.game.maps.World;
 import cz.jstrolen.HP_RPG.game.entities.units.Unit;
 import cz.jstrolen.HP_RPG.game.maps.Map;
-import cz.jstrolen.HP_RPG.game.support.Input;
+import cz.jstrolen.HP_RPG.support.Input;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.List;
 
 /**
  * Created by Josef Stroleny
@@ -20,62 +17,21 @@ public final class Display extends Canvas {
 	static {
 		WORLD.setMap(new Map("Surrey", "maps/Surrey.map"));
 	}
-	private final Game Game;
 	private Unit player = WORLD.getPlayer();
 	private boolean[] keys = new boolean[256];
-	private boolean mouseButton1 = false;
-	private boolean spellSelection = false;
-	private List<SpellField> spellFields;
+	private boolean mouseButtonLeft = false;
+	private boolean mouseButtonRight = false;
+	/*private boolean spellSelection = false;	//TODO
+	private List<SpellField> spellFields;*/
 
 	public Display(Game game) {
-		this.Game = game;
+		this.addMouseListener(game);
+		this.addMouseWheelListener(game);
+		this.addKeyListener(game);
 		Display.WORLD.getPlayer().setAi(null);
-
-		/*TODO
-		this.addMouseWheelListener(new MouseWheelListener() {
-			@Override
-			public void mouseWheelMoved(MouseWheelEvent e) {
-				player.changeSpell(e.getWheelRotation());
-			}
-		});
-		*/
-
-		this.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				/*if (e.getButton() == MouseEvent.BUTTON1) {
-					if (!spellSelection) {
-						mouseButton1 = false;
-					}
-				}*/
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				/*if (e.getButton() == MouseEvent.BUTTON1) {
-					if (spellSelection) {
-						for (int i = 0; i < spellFields.size(); i++) {
-							if (spellFields.get(i).contains(e.getPoint())) {
-								//player.setSpell(spellFields.get(i).getId()); TODO
-								spellSelection = false;
-								Display.this.Game.setPaused(spellSelection);
-								break;
-							}
-						}
-					}
-					else mouseButton1 = true;
-					repaint();
-				}
-				else if (e.getButton() == MouseEvent.BUTTON2) {
-					spellSelection = true;
-					//Display.this.Game.setPaused(spellSelection); TODO
-					repaint();
-				}*/
-			}
-		});
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		Image image = Input.getImage("images/wand.png");
-		Cursor c = toolkit.createCustomCursor(image, new Point(this.getX(), this.getY()), "wand");
+		Image image = Input.getImage(DrawSettings.CURSOR_PATH);
+		Cursor c = toolkit.createCustomCursor(image, new Point(this.getX(), this.getY()), DrawSettings.CURSOR_NAME);
 		this.setCursor(c);
 	}
 
@@ -142,19 +98,21 @@ public final class Display extends Canvas {
 	*/
 
 	public void playerTick() {
-		/*if (this.mouseButton1) {
+		if (mouseButtonLeft) {
 			try {
-				Point pom = Display.this.getMousePosition();
-				double vector = Math.atan2(pom.y - this.getHeight() / 2, pom.x - this.getWidth() / 2);
-				player.cast(vector, WORLD);
-			} catch (Exception e) {
-				//Mouse out of panel
-				player.stopCast(WORLD);
+				boolean cast = player.cast();
+				if (cast) {
+					Point pom = Display.this.getMousePosition();
+					double orientation = Math.atan2(pom.y - this.getHeight() / 2, pom.x - this.getWidth() / 2);
+					WORLD.createNewSpell(player, orientation);
+				}
+			} catch (Exception e) { //Mouse out of panel
+				player.stopCast();
 			}
 		}
 		else {
-			player.stopCast(WORLD);
-		}*/
+			player.stopCast();
+		}
 		
 		double diffX = 0.0;
 		double diffY = 0.0;
@@ -176,4 +134,14 @@ public final class Display extends Canvas {
 	}
 
 	public boolean[] getKeys() { return keys; }
+
+	public Unit getPlayer() { return player; }
+
+	public void setMouseButtonLeft(boolean mouseButtonLeft) {
+		this.mouseButtonLeft = mouseButtonLeft;
+	}
+
+	public void setMouseButtonRight(boolean mouseButtonRight) {
+		this.mouseButtonRight = mouseButtonRight;
+	}
 }

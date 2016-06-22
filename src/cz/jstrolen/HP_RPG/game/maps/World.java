@@ -1,12 +1,13 @@
-package cz.jstrolen.HP_RPG.game;
+package cz.jstrolen.HP_RPG.game.maps;
 
+import cz.jstrolen.HP_RPG.game.Settings;
 import cz.jstrolen.HP_RPG.game.entities.AEntity;
 import cz.jstrolen.HP_RPG.game.entities.objects.Block;
 import cz.jstrolen.HP_RPG.game.entities.objects.Item;
 import cz.jstrolen.HP_RPG.game.entities.objects.ObjectFactory;
 import cz.jstrolen.HP_RPG.game.entities.spells.Spell;
+import cz.jstrolen.HP_RPG.game.entities.spells.SpellFactory;
 import cz.jstrolen.HP_RPG.game.entities.units.Unit;
-import cz.jstrolen.HP_RPG.game.maps.Map;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -21,7 +22,7 @@ import static cz.jstrolen.HP_RPG.game.Settings.DRAW_DISTANCE;
 public class World {
 	private static final World singleton = new World();
 	private Map map;
-	
+
 	private World() {}
 
 	public void tick() {
@@ -48,12 +49,13 @@ public class World {
 			}
 		}
 	}
-	
+
 	public void draw(Graphics2D g) {
 		drawBlocks(g);
 		drawItems(g);
 		drawUnits(g);
 		drawSpells(g);
+		drawBars(g);
 	}
 
 	private void drawBlocks(Graphics2D g) {
@@ -65,7 +67,7 @@ public class World {
 		int endY = (int) Math.min((map.getUnits().get(0).getPositionY() + drawDistance) / blockSize, map.getSize().width - 1);
 		for (int x = startX; x <= endX; x++) {
 			for (int y = startY; y <= endY; y++) {
-				if (Math.sqrt(Math.pow(map.getBlocks()[y][x].getPositionX() - map.getUnits().get(0).getPositionX(), 2) +
+				if (Math.sqrt(Math.pow(map.getBlocks()[y][x].getPositionX() - map.getUnits().get(0).getPositionX(), 2) +		//TODO sqrt speed
 						Math.pow(map.getBlocks()[y][x].getPositionY() - map.getUnits().get(0).getPositionY(), 2)) > DRAW_DISTANCE) continue;
 				map.getBlocks()[y][x].draw(g);
 			}
@@ -86,19 +88,26 @@ public class World {
 					Math.pow(map.getUnits().get(i).getPositionY() - map.getUnits().get(0).getPositionY(), 2)) > DRAW_DISTANCE) continue;
 			map.getUnits().get(i).draw(g);
 		}
+	}
 
-		/* TODO
-		for (int i = 0; i < casting.size(); i++) {
-			if (!map.getUnits().contains(casting.get(i).getCaster())) {
-				casting.remove(i);
-				i--;
-				continue;
+	private void drawBars(Graphics2D g) {
+		if (Settings.DRAW_HEALTH_BAR) {
+			g.setColor(Settings.HEALTH_BAR_COLOR);
+			for (int i = 0; i < map.getUnits().size(); i++) {
+				if (Math.sqrt(Math.pow(map.getUnits().get(i).getPositionX() - map.getUnits().get(0).getPositionX(), 2) +
+						Math.pow(map.getUnits().get(i).getPositionY() - map.getUnits().get(0).getPositionY(), 2)) > DRAW_DISTANCE) continue;
+				map.getUnits().get(i).drawHealthBar(g);
 			}
-			if (Math.sqrt(Math.pow(casting.get(i).getPositionX() - map.getUnits().get(0).getPositionX(), 2) +
-					Math.pow(casting.get(i).getPositionY() - map.getUnits().get(0).getPositionY(), 2)) > DRAW_DISTANCE) continue;
-			casting.get(i).loading(g, casting.get(i).getCaster());
 		}
-		*/
+
+		if (Settings.DRAW_SPELL_BAR) {
+			g.setColor(Settings.SPELL_BAR_COLOR);
+			for (int i = 0; i < map.getUnits().size(); i++) {
+				if (Math.sqrt(Math.pow(map.getUnits().get(i).getPositionX() - map.getUnits().get(0).getPositionX(), 2) +
+						Math.pow(map.getUnits().get(i).getPositionY() - map.getUnits().get(0).getPositionY(), 2)) > DRAW_DISTANCE) continue;
+				map.getUnits().get(i).drawSpellBar(g);
+			}
+		}
 	}
 
 	private void drawSpells(Graphics2D g) {
@@ -108,26 +117,47 @@ public class World {
 	}
 
 	public void move(AEntity entity, double diffX, double diffY) {
-		/*if (levitating == null) {//TODO*/
 		double positionX = entity.getPositionX();
 		double positionY = entity.getPositionY();
 		entity.setPositionX(positionX + diffX);
 		entity.setPositionY(positionY + diffY);
 		if (tryIntersection(entity, false, true, false) == null) return;
-		entity.setPositionX(positionX);
-		entity.setPositionY(positionY);
-		/*}
-		else {
-			double[] position = map.tryMove(levitating, levitating.getPositionX(), levitating.getPositionY(), difX, difY, levitating.getSIZE_X(), levitating.getSIZE_Y());
-			levitating.setPositionX(levitating.getPositionX() + position[0]);
-			levitating.setPositionY(levitating.getPositionY() + position[1]);
-		}*/
+
+		double newX = positionX, newY = positionY;
+		//X
+		for (int i = 1; i < Settings.INTERSECTION_STEPS; i++) {
+			newX = positionX + diffX / i;
+			entity.setPositionX(newX);
+			entity.setPositionY(newY);
+			if (tryIntersection(entity, false, true, false) == null) break;
+			else newX = positionX;
+		}
+		//Y
+		for (int i = 1; i < Settings.INTERSECTION_STEPS; i++) {
+			newY = positionY + diffY / i;
+			entity.setPositionX(newX);
+			entity.setPositionY(newY);
+			if (tryIntersection(entity, false, true, false) == null) break;
+			else newY = positionY;
+		}
+		entity.setPositionX(newX);
+		entity.setPositionY(newY);
 	}
 
 	public boolean tryHit(Spell spell) { //TODO
 		AEntity intersect = tryIntersection(spell, true, false, false);
-		if (intersect != null) return true;
-		return false;
+		if (intersect == null) return false;
+		AEntity newEntity = intersect.hit(spell);
+		if (newEntity != intersect) changeEntity(intersect, newEntity);
+		return true;
+	}
+
+	private void changeEntity(AEntity entity, AEntity newEntity) {
+		if (entity instanceof Block) { map.changeBlock((Block) entity, (Block) newEntity); }
+		else if (entity instanceof Item) {
+			if (newEntity == null) map.getItems().remove(entity);
+			else map.getItems().set(map.getItems().indexOf(entity), (Item) newEntity);
+		}
 	}
 
 	public AEntity tryIntersection(AEntity entity, boolean detectHittable, boolean detectNotCrossable, boolean detectNotFlyable) {
@@ -160,32 +190,38 @@ public class World {
 		for (int i = 0; i < map.getUnits().size(); i++) {
 			Unit unit = map.getUnits().get(i);
 			if (unit != entity && unit.getBounds().intersects(bound)) {
+				if (entity instanceof Spell) if (((Spell) entity).getCaster() == unit) continue;
 				return unit;
 			}
 		}
 		return null;
 	}
-	
+
+	public void createNewSpell(Unit caster, double orientation) {
+		Spell spell = SpellFactory.getSpell(caster, orientation);
+		if (spell != null) map.getSpells().add(spell);
+	}
+
 	public int getWidth() {
 		return map.getSize().width;
 	}
-	
+
 	public int getHeight() {
 		return map.getSize().height;
 	}
-	
+
 	public Unit getPlayer() {
 		return map.getUnits().get(0);
 	}
-	
+
 	public Map getMap() {
 		return this.map;
 	}
-	
+
 	public void setMap(Map newMap) {
 		this.map = newMap;
 	}
-	
+
 	public static World getInstance() {
 		return singleton;
 	}

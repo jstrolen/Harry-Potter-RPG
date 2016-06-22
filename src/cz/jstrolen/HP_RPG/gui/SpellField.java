@@ -43,9 +43,8 @@ public final class SpellField {
 	}
 
 	public boolean contains(Point p) {
-		if (p.x >= POINT_X - sizeX / 2 - FONT_INSETS && p.x <= POINT_X + sizeX / 2 + 4 * FONT_INSETS && 
-				p.y >= POINT_Y - sizeY / 2 - FONT_INSETS && p.y <= POINT_Y + sizeY / 2 + 4 * FONT_INSETS) return true;
-		return false;
+		return p.x >= POINT_X - sizeX / 2 - FONT_INSETS && p.x <= POINT_X + sizeX / 2 + 4 * FONT_INSETS &&
+				p.y >= POINT_Y - sizeY / 2 - FONT_INSETS && p.y <= POINT_Y + sizeY / 2 + 4 * FONT_INSETS;
 	}
 	
 	public int getId() {
