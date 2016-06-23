@@ -11,8 +11,6 @@ import cz.jstrolen.HP_RPG.game.entities.units.Unit;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.List;
 
 import static cz.jstrolen.HP_RPG.game.Settings.DRAW_DISTANCE;
 
@@ -35,6 +33,11 @@ public class World {
 			}
 		}
 
+		for (int i = 0; i < map.getUnits().size(); i++) {
+			map.getUnits().get(i).tick();
+		}
+
+		/*
 		List<Thread> threads = new ArrayList<>(map.getUnits().size());
 		for (int i = 0; i < map.getUnits().size(); i++) {
 			Thread t = new Thread(map.getUnits().get(i));
@@ -48,6 +51,7 @@ public class World {
 				e.printStackTrace();
 			}
 		}
+		*/
 	}
 
 	public void draw(Graphics2D g) {
@@ -144,7 +148,7 @@ public class World {
 		entity.setPositionY(newY);
 	}
 
-	public boolean tryHit(Spell spell) { //TODO
+	private boolean tryHit(Spell spell) { //TODO
 		AEntity intersect = tryIntersection(spell, true, false, false);
 		if (intersect == null) return false;
 		AEntity newEntity = intersect.hit(spell);
@@ -158,9 +162,12 @@ public class World {
 			if (newEntity == null) map.getItems().remove(entity);
 			else map.getItems().set(map.getItems().indexOf(entity), (Item) newEntity);
 		}
+		else if (entity instanceof Unit) {
+			if (newEntity == null) map.getUnits().remove(entity);
+		}
 	}
 
-	public AEntity tryIntersection(AEntity entity, boolean detectHittable, boolean detectNotCrossable, boolean detectNotFlyable) {
+	private AEntity tryIntersection(AEntity entity, boolean detectHittable, boolean detectNotCrossable, boolean detectNotFlyable) {
 		Rectangle2D bound = entity.getBounds();
 		Block block;
 		int startX = (int) (entity.getPositionX() / ObjectFactory.getBlockSize());

@@ -12,6 +12,7 @@
             <description>Person</description>
             <speed>5.0</speed>
             <health>100.0</health>
+            <castSpeed>1</castSpeed>
             <spells>
                 <spellID>0</spellID>
                 <spellID>1</spellID>

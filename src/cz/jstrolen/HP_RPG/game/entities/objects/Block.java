@@ -22,18 +22,17 @@ public class Block extends AObject {
     @Override
     public AEntity hit(Spell spell) {
         List<Integer> spellEffects = new ArrayList<>(spell.getAttributes().getEffects());
-        for (int i = 0; i < spellEffects.size(); i++) {
-            int effect = spellEffects.get(i);
+        for (Integer spellEffect : spellEffects) {
             List<Integer> objectTransforms = new ArrayList<>(getAttributes().getTransform());
             for (int j = 0; j < objectTransforms.size(); j++) {
                 ObjectTransform objTrans = ObjectFactory.getBlockTransforms(objectTransforms.get(j));
-                if (objTrans.getTransforms().contains(effect)) {
+                if (objTrans.getTransforms().contains(spellEffect)) {
                     getTransforms()[j]++;
                     if (getTransforms()[j] >= objTrans.getDurability()) {
                         return ObjectFactory.getBlock(objTrans.getNewObject(), MAP_POSITION_X, MAP_POSITION_Y);
                     }
                 } else {
-                    if (objTrans.getAntitransforms().contains(effect)) {
+                    if (objTrans.getAntitransforms().contains(spellEffect)) {
                         if (getTransforms()[j] > 0) getTransforms()[j]--;
                     }
                 }

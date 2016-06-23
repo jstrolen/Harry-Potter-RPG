@@ -15,7 +15,7 @@ public abstract class AEntity {
     private double sizeX;
     private double sizeY;
 
-    public AEntity(double posX, double posY, double sizeX, double sizeY) {
+    protected AEntity(double posX, double posY, double sizeX, double sizeY) {
         this.positionX = posX;
         this.positionY = posY;
         this.sizeX = sizeX;
@@ -53,7 +53,7 @@ public abstract class AEntity {
         return sizeX;
     }
 
-    public void setSizeX(double sizeX) {
+    protected void setSizeX(double sizeX) {
         this.sizeX = sizeX;
         this.BOUNDS.setRect(positionX, positionY, sizeX, sizeY);
     }
@@ -62,7 +62,7 @@ public abstract class AEntity {
         return sizeY;
     }
 
-    public void setSizeY(double sizeY) {
+    protected void setSizeY(double sizeY) {
         this.sizeY = sizeY;
         this.BOUNDS.setRect(positionX, positionY, sizeX, sizeY);
     }

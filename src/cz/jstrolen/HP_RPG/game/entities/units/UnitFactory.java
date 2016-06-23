@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Josef Stroleny
@@ -51,26 +52,27 @@ public class UnitFactory {
                 String description = nodes.item(7).getTextContent();
                 double speed = Double.valueOf(nodes.item(9).getTextContent());
                 double health = Double.valueOf(nodes.item(11).getTextContent());
+                double castSpeed = Double.valueOf(nodes.item(13).getTextContent());
                 Set<Integer> spells = new HashSet<>();
-                NodeList spellList = nodes.item(13).getChildNodes();
+                NodeList spellList = nodes.item(15).getChildNodes();
                 for (int j = 1; j < spellList.getLength(); j += 2) {
                     spells.add(Integer.valueOf(spellList.item(j).getTextContent()));
                 }
-                double objectWidth = Double.valueOf(nodes.item(15).getChildNodes().item(1).getTextContent());
-                double objectHeight = Double.valueOf(nodes.item(15).getChildNodes().item(3).getTextContent());
-                int colorRed = Integer.valueOf(nodes.item(17).getChildNodes().item(1).getTextContent());
-                int colorGreen = Integer.valueOf(nodes.item(17).getChildNodes().item(3).getTextContent());
-                int colorBlue = Integer.valueOf(nodes.item(17).getChildNodes().item(5).getTextContent());
-                int imageWidth = Integer.valueOf(nodes.item(19).getChildNodes().item(1).getTextContent());
-                int imageHeight = Integer.valueOf(nodes.item(19).getChildNodes().item(3).getTextContent());
-                int imageX = Integer.valueOf(nodes.item(21).getChildNodes().item(1).getTextContent());
-                int imageY = Integer.valueOf(nodes.item(21).getChildNodes().item(3).getTextContent());
+                double objectWidth = Double.valueOf(nodes.item(17).getChildNodes().item(1).getTextContent());
+                double objectHeight = Double.valueOf(nodes.item(17).getChildNodes().item(3).getTextContent());
+                int colorRed = Integer.valueOf(nodes.item(19).getChildNodes().item(1).getTextContent());
+                int colorGreen = Integer.valueOf(nodes.item(19).getChildNodes().item(3).getTextContent());
+                int colorBlue = Integer.valueOf(nodes.item(19).getChildNodes().item(5).getTextContent());
+                int imageWidth = Integer.valueOf(nodes.item(21).getChildNodes().item(1).getTextContent());
+                int imageHeight = Integer.valueOf(nodes.item(21).getChildNodes().item(3).getTextContent());
+                int imageX = Integer.valueOf(nodes.item(23).getChildNodes().item(1).getTextContent());
+                int imageY = Integer.valueOf(nodes.item(23).getChildNodes().item(3).getTextContent());
 
 
                 UnitAttributes ua = new UnitAttributes(id, name, title, description,
                         new Color(colorRed, colorGreen, colorBlue),
                         Input.crop(image, tileSize, imageWidth, imageHeight, imageX, imageY),
-                        objectWidth, objectHeight, speed, health, spells);
+                        objectWidth, objectHeight, speed, health, castSpeed, spells);
                 UNIT_TYPES.put(id, ua);
             }
         } catch (Exception e) {
@@ -96,7 +98,7 @@ public class UnitFactory {
 
                 Set<Integer> effects = new HashSet<>();
                 NodeList effectList = nodes.item(9).getChildNodes();
-                for (int j = 1; i < effectList.getLength(); j += 2) {
+                for (int j = 1; j < effectList.getLength(); j += 2) {
                     effects.add(Integer.valueOf(effectList.item(j).getTextContent()));
                 }
 
@@ -130,5 +132,10 @@ public class UnitFactory {
 
     public static UnitChange getUnitTransform(int unitId, int transformId) {
         if (UNIT_TRANSFORMS.get(transformId).getExcludes().contains(unitId)) return null;
-        return new UnitChange(UNIT_TRANSFORMS.get(transformId)); }
+        return new UnitChange(UNIT_TRANSFORMS.get(transformId));
+    }
+
+    public static List<UnitChange> getAllUnitChanges(int effect) {
+        return UNIT_TRANSFORMS.values().stream().filter(ut -> ut.getEffects().contains(effect)).map(UnitChange::new).collect(Collectors.toList());
+    }
 }

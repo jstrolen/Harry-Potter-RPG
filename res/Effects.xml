@@ -19,4 +19,11 @@
         <title>Ignite</title>
         <description>Ignite</description>
     </effect>
+
+    <effect>
+        <id>3</id>
+        <name>avadaKedavra</name>
+        <title>Avada Kedavra</title>
+        <description>Avada Kedavra</description>
+    </effect>
 </effects>

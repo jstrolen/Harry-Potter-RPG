@@ -20,15 +20,15 @@ public class UnitTransform extends AInfo {
         this.EXCLUDES = excludes;
     }
 
-    public List<UnitTransformEffect> getEffects() {
-        return UNIT_EFFECTS;
+    public Set<Integer> getEffects() {
+        return EFFECTS;
     }
 
     public Set<Integer> getExcludes() {
         return EXCLUDES;
     }
 
-    public List<UnitTransformEffect> getUNIT_EFFECTS() {
+    public List<UnitTransformEffect> getUnitEffects() {
         return UNIT_EFFECTS;
     }
 }

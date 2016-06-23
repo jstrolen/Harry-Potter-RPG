@@ -14,7 +14,7 @@ public class Input {
 		try {
 			return new File(Input.class.getClassLoader().getResource(s).toURI());
 		} catch (Exception e) {
-			System.out.println("Chyba při načítání souboru " + s + ".");
+			e.printStackTrace();
 			return null;
 		}
 	}
@@ -23,7 +23,7 @@ public class Input {
 		try {
 			return ImageIO.read(Input.class.getClassLoader().getResource(s));
 		} catch (Exception e) {
-			System.out.println("Chyba při načítání obrázku " + s + ".");
+			e.printStackTrace();
 			return null;
 		}
 	}

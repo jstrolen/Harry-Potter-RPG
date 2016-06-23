@@ -75,7 +75,7 @@ public class Map {
 			
 			br.close();
 		} catch (Exception e) {
-			System.out.println("Chyba při zpracování mapy " + NAME + ".");
+			e.printStackTrace();
 		}
 	}
 

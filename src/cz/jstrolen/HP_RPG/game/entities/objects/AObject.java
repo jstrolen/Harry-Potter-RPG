@@ -13,7 +13,7 @@ public abstract class AObject extends AEntity {
 	private int rotation;
 	private Teleport teleport;
 	
-	public AObject(double positionX, double positionY, ObjectAttributes objectAttributes) {
+	AObject(double positionX, double positionY, ObjectAttributes objectAttributes) {
 		super(positionX, positionY, objectAttributes.getSizeX(), objectAttributes.getSizeY());
 		this.objectAttributes = objectAttributes;
 		this.rotation = 0;
@@ -21,7 +21,7 @@ public abstract class AObject extends AEntity {
 	}
 
 	@Override
-	public void draw(Graphics2D g) {	//TODO
+	public void draw(Graphics2D g) {
 		if (objectAttributes.getImage() == null) {
 			g.setColor(objectAttributes.getColor());
 			g.fillOval((int) getPositionX(), (int) getPositionY(), (int) getSizeX(), (int) getSizeY());
@@ -67,7 +67,7 @@ public abstract class AObject extends AEntity {
 
 	public Teleport getTeleport() { return teleport; }
 
-	public int[] getTransforms() {
+	int[] getTransforms() {
 		return TRANSFORMS;
 	}
 }

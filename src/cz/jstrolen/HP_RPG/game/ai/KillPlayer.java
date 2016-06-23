@@ -9,10 +9,10 @@ import java.util.List;
 public class KillPlayer extends AI {
 	public static final int ID = 1;
 	private static final double EPSILON = 0.01;
-	private static final int MIN_DISTANE = 100;
-	private static final int MAX_DISTANE = 250;
-	private String name;
-	private List<Container> moves = new ArrayList<Container>();
+	private static final int MIN_DISTANCE = 100;
+	private static final int MAX_DISTANCE = 250;
+	private final String name;
+	private List<Container> moves = new ArrayList<>();
 	private double difX = 0;
 	private double difY = 0;
 	private int steps = 0;
@@ -30,14 +30,14 @@ public class KillPlayer extends AI {
 		double vector = Math.atan2(posY - myY, posX - myX);
 		Unit.setSpell(Spell.getRandomDamagingSpell(Unit, vector).getId());
 		Unit.cast(vector, world);
-		if ((moves.size() / 3 < steps + 5) || (moves.isEmpty() && PathFinding.distance(world.getMap().getUnits().get(0), Unit) > MAX_DISTANE)) {
+		if ((moves.size() / 3 < steps + 5) || (moves.isEmpty() && PathFinding.distance(world.getMap().getUnits().get(0), Unit) > MAX_DISTANCE)) {
 			moves = PathFinding.findPath(Unit, world.getMap().getBlocks(), world.getMap().getItems(), world.getMap().getUnits(),
 					new int[]{(int) world.getMap().getUnits().get(0).getPositionX(), (int) world.getMap().getUnits().get(0).getPositionY()});
 			steps = moves.size();
 		}
 		
 		if (!moves.isEmpty() || Math.abs(difX) > 0 || Math.abs(difY) > 0) {
-			if (PathFinding.distance(world.getMap().getUnits().get(0), Unit) < MIN_DISTANE) {
+			if (PathFinding.distance(world.getMap().getUnits().get(0), Unit) < MIN_DISTANCE) {
 				moves.clear();
 				difX = 0;
 				difY = 0;

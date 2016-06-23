@@ -5,7 +5,7 @@ import cz.jstrolen.HP_RPG.game.entities.units.Unit;
 
 public class Script extends AI {
 	public static final int ID = 0;
-	private String name;
+	private final String name;
 	
 	public Script(String name) {
 		this.name = name;

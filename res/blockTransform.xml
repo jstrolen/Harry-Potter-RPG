@@ -11,7 +11,7 @@
             <transformEffects>
                 <transformEffect>0</transformEffect>
             </transformEffects>
-            <antitransformEffects></antitransformEffects>
+            <antitransformEffects />
         </transform>
 
         <transform>
@@ -41,7 +41,7 @@
             <transformEffects>
                 <transformEffect>0</transformEffect>
             </transformEffects>
-            <antitransformEffects></antitransformEffects>
+            <antitransformEffects />
         </transform>
 
         <transform>
@@ -71,7 +71,7 @@
             <transformEffects>
                 <transformEffect>0</transformEffect>
             </transformEffects>
-            <antitransformEffects></antitransformEffects>
+            <antitransformEffects />
         </transform>
 
         <transform>
@@ -101,7 +101,7 @@
             <transformEffects>
                 <transformEffect>0</transformEffect>
             </transformEffects>
-            <antitransformEffects></antitransformEffects>
+            <antitransformEffects />
         </transform>
 
         <transform>

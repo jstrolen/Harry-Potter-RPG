@@ -8,7 +8,7 @@ import java.awt.font.FontRenderContext;
 /**
  * Created by Josef Stroleny
  */
-public final class SpellField {
+final class SpellField {
 	private static final int FONT_INSETS = 3;
 	private final String TEXT;
 	private final int ID;

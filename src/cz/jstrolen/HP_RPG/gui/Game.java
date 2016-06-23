@@ -8,14 +8,11 @@ import java.awt.image.BufferStrategy;
 /**
  * Created by Josef Stroleny
  */
-public final class Game extends JFrame implements KeyListener, MouseListener, MouseWheelListener, Runnable {
-	private Thread gameThread;
-	private Display display;
+final class Game extends JFrame implements KeyListener, MouseListener, MouseWheelListener, Runnable {
+	private final Thread gameThread;
+	private final Display display;
 	private boolean running;
 	private boolean paused;
-
-	private BufferStrategy bs;
-	private Graphics2D g;
 
 	public Game() {
 		this.setSize(DrawSettings.SIZE);
@@ -46,7 +43,7 @@ public final class Game extends JFrame implements KeyListener, MouseListener, Mo
 		final double TIME_BETWEEN_UPDATES = 1000000000 / GAME_HERTZ;
 		final int MAX_UPDATES_BEFORE_RENDER = DrawSettings.MAX_UPDATES_BEFORE_RENDER;
 		double lastUpdateTime = System.nanoTime();
-		double lastRenderTime = System.nanoTime();
+		double lastRenderTime;
 		final double TARGET_FPS = DrawSettings.TARGET_FPS;
 		final double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / TARGET_FPS;
 		double now;
@@ -87,7 +84,8 @@ public final class Game extends JFrame implements KeyListener, MouseListener, Mo
 	}
 
 	private void render() {
-		bs = display.getBufferStrategy();
+		BufferStrategy bs = display.getBufferStrategy();
+		Graphics2D g;
 		if (bs == null) {
 			display.createBufferStrategy(DrawSettings.BUFFER_STRATEGY);
 			bs = display.getBufferStrategy();

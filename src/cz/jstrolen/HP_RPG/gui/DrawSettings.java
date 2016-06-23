@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  * Created by Josef Stroleny
  */
-public class DrawSettings {
+class DrawSettings {
     public static final int BUFFER_STRATEGY = 3;
 
     public static final double GAME_HERTZ = 40;

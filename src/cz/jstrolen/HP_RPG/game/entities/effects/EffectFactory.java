@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Created by Josef Stroleny
  */
-public class EffectFactory {
+class EffectFactory {
     private static final String EFFECTS_PATH = "effects.xml";
     private static final Map<Integer, Effect> EFFECT_TYPES = new HashMap<>();
 
@@ -25,7 +25,7 @@ public class EffectFactory {
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document dom = dom = dBuilder.parse(Input.getFile(EFFECTS_PATH));
+            Document dom = dBuilder.parse(Input.getFile(EFFECTS_PATH));
 
             Element doc = dom.getDocumentElement();
             NodeList objects = doc.getElementsByTagName("effect");

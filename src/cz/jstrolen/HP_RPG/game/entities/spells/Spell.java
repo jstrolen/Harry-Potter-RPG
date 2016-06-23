@@ -10,9 +10,9 @@ import java.awt.*;
  */
 public class Spell extends AEntity {
 	private final SpellAttributes spellAttributes;
+	private final Unit caster;
 
 	private double orientation;
-	private Unit caster;
 	private double remainingDistance;
 
 	

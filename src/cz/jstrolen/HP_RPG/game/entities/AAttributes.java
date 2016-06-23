@@ -13,7 +13,7 @@ public abstract class AAttributes extends AInfo {
     private final double SIZE_X;
     private final double SIZE_Y;
 
-    public AAttributes(int id, String name, String title, String description, Color color, BufferedImage image, double sizeX, double sizeY) {
+    protected AAttributes(int id, String name, String title, String description, Color color, BufferedImage image, double sizeX, double sizeY) {
         super(id, name, title, description);
         this.COLOR = color;
         this.IMAGE = image;

@@ -61,6 +61,33 @@
             </changes>
         </transform>
 
+        <transform>
+            <id>4</id>
+            <name>kill</name>
+            <title>Kill</title>
+            <description>Kill</description>
+            <transformEffects>
+                <transformEffect>3</transformEffect>
+            </transformEffects>
+            <excludes />
+            <changes>
+                <change value="1" duration="0">KILL</change>
+            </changes>
+        </transform>
+
+        <transform>
+            <id>5</id>
+            <name>burn</name>
+            <title>Burn</title>
+            <description>Burn</description>
+            <transformEffects>
+                <transformEffect>2</transformEffect>
+            </transformEffects>
+            <excludes />
+            <changes>
+                <change value="5" duration="1">INJURE</change>
+            </changes>
+        </transform>
 
     </transforms>
 </unitTransforms>

@@ -18,18 +18,17 @@ public class Item extends AObject {
 	@Override
 	public AEntity hit(Spell spell) {
 		List<Integer> spellEffects = new ArrayList<>(spell.getAttributes().getEffects());
-		for (int i = 0; i < spellEffects.size(); i++) {
-			int effect = spellEffects.get(i);
+		for (Integer spellEffect : spellEffects) {
 			List<Integer> objectTransforms = new ArrayList<>(getAttributes().getTransform());
 			for (int j = 0; j < objectTransforms.size(); j++) {
 				ObjectTransform objTrans = ObjectFactory.getItemTransforms(objectTransforms.get(j));
-				if (objTrans.getTransforms().contains(effect)) {
+				if (objTrans.getTransforms().contains(spellEffect)) {
 					getTransforms()[j]++;
 					if (getTransforms()[j] >= objTrans.getDurability()) {
 						return ObjectFactory.getItem(objTrans.getNewObject(), (int) getPositionX(), (int) getPositionY());
 					}
 				} else {
-					if (objTrans.getAntitransforms().contains(effect)) {
+					if (objTrans.getAntitransforms().contains(spellEffect)) {
 						if (getTransforms()[j] > 0) getTransforms()[j]--;
 					}
 				}

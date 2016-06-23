@@ -10,10 +10,10 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 
-public class PathFinding {
+class PathFinding {
 	
 	public static List<Container> findPath(AObject move, AObject[][] objects, List<Item> items, List<Unit> Units, int[] end) {
-		List<Container> moves = new ArrayList<Container>();
+		List<Container> moves = new ArrayList<>();
 		int endX = end[0] / ObjectFactory.getBlockSize();
 		int endY = end[1] / ObjectFactory.getBlockSize();
 		int startX = (int) move.getPositionX() / ObjectFactory.getBlockSize();
@@ -22,7 +22,7 @@ public class PathFinding {
 			trim(moves, move, startX, startY);
 			return moves;
 		}
-		Deque<BlockHelp> list = new LinkedList<BlockHelp>();
+		Deque<BlockHelp> list = new LinkedList<>();
 		
 		BlockHelp[][] blHlp = new BlockHelp[objects.length][objects[0].length];
 		for (int x = 0; x < objects.length; x++) {
@@ -112,10 +112,10 @@ public class PathFinding {
 }
 
 class BlockHelp {
-	AObject object;
+	final AObject object;
 	BlockHelp predecessor;
-	int x;
-	int y;
+	final int x;
+	final int y;
 	
 	public BlockHelp(AObject object, int x, int y) {
 		this.object = object;

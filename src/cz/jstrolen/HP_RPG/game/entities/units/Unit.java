@@ -20,6 +20,9 @@ public class Unit extends AEntity implements Runnable {
 	private double health;
 	private List<UnitChange> effects;
 	private AI ai;
+	private double castSpeed;
+
+	private long lastTick;
 
 	private int actualSpell;
 	private double castTime;
@@ -29,8 +32,11 @@ public class Unit extends AEntity implements Runnable {
 		this.unitAttributes = unitAttributes;
 		this.speed = unitAttributes.getSpeed();
 		this.health = unitAttributes.getHealth();
-		effects = new ArrayList<>();
-		actualSpell = unitAttributes.getSpells().isEmpty() ? -1 : 0;
+		this.castSpeed = unitAttributes.getCastSpeed();
+		this.effects = new ArrayList<>();
+		this.actualSpell = unitAttributes.getSpells().isEmpty() ? -1 : 0;
+		this.lastTick = System.currentTimeMillis();
+		this.effects = new ArrayList<>();
 	}
 
 	@Override
@@ -50,6 +56,13 @@ public class Unit extends AEntity implements Runnable {
 		
 		if (ai != null) ai.tick(this, World.getInstance());
 		*/
+	}
+
+	public void tick() {
+		for (int i = 0; i < effects.size(); i++) {
+			boolean delete = effects.get(i).tick(this);
+			if (delete) effects.remove(i--);
+		}
 	}
 
 	@Override
@@ -83,16 +96,22 @@ public class Unit extends AEntity implements Runnable {
 
 	@Override
 	public AEntity hit(Spell spell) {
-		return this;
+		List<Integer> spellEffects = new ArrayList<>(spell.getAttributes().getEffects());
+		for (Integer spellEffect : spellEffects) {
+			effects.addAll(UnitFactory.getAllUnitChanges(spellEffect));
+		}
+		return this.getHealth() >  0 ? this : null;
 	}
 
-	public boolean cast() {
-		castTime++;		//TODO
-		if (castTime >= SpellFactory.getSpellAttributes(actualSpell).getCastTime()) {
-			stopCast();
-			return true;
+	public int cast() {
+		castTime += castSpeed;
+		double spellCast = SpellFactory.getSpellAttributes(actualSpell).getCastTime();
+		int spells = 0;
+		while (castTime > spellCast) {
+			spells++;
+			castTime -= spellCast;
 		}
-		return false;
+		return spells;
 	}
 
 	public void stopCast() {
@@ -141,4 +160,26 @@ public class Unit extends AEntity implements Runnable {
 	}
 
 	public UnitAttributes getAttributes() { return unitAttributes; }
+
+	public double getCastTime() {
+		return castTime;
+	}
+
+	public void setCastTime(double castTime) {
+		this.castTime = castTime;
+	}
+
+	public double getCastSpeed() {
+		return castSpeed;
+	}
+
+	public void setCastSpeed(double castSpeed) {
+		this.castSpeed = castSpeed;
+	}
+
+	public long getLastTick() {
+		return lastTick;
+	}
+
+	public void setLastTick(long lastTick) { this.lastTick = lastTick; }
 }

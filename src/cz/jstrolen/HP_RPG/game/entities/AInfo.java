@@ -9,12 +9,26 @@ public abstract class AInfo {
     private final String TITLE;
     private final String DESCRIPTION;
 
-    public AInfo(int id, String name, String title, String description) {
+    protected AInfo(int id, String name, String title, String description) {
         this.ID = id;
         this.NAME = name;
         this.TITLE = title;
         this.DESCRIPTION = description;
     }
 
+    public int getId() {
+        return ID;
+    }
 
+    public String getName() {
+        return NAME;
+    }
+
+    public String getTitle() {
+        return TITLE;
+    }
+
+    public String getDescription() {
+        return DESCRIPTION;
+    }
 }

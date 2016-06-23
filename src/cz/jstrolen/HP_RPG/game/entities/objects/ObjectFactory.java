@@ -45,7 +45,7 @@ public class ObjectFactory {
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document dom = null;
+			Document dom;
 			if (blocks) dom = dBuilder.parse(Input.getFile(BLOCK_PATH));
 			else dom = dBuilder.parse(Input.getFile(ITEM_PATH));
 
@@ -102,7 +102,7 @@ public class ObjectFactory {
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document dom = null;
+			Document dom;
 			if (blocks) dom = dBuilder.parse(Input.getFile(BLOCK_TRANSFORM_PATH));
 			else dom = dBuilder.parse(Input.getFile(ITEM_TRANSFORM_PATH));
 

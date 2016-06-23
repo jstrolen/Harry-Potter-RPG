@@ -12,13 +12,13 @@ import java.awt.event.KeyEvent;
 /**
  * Created by Josef Stroleny
  */
-public final class Display extends Canvas {
+final class Display extends Canvas {
 	private static final World WORLD = World.getInstance();
 	static {
 		WORLD.setMap(new Map("Surrey", "maps/Surrey.map"));
 	}
-	private Unit player = WORLD.getPlayer();
-	private boolean[] keys = new boolean[256];
+	private final Unit player = WORLD.getPlayer();
+	private final boolean[] keys = new boolean[256];
 	private boolean mouseButtonLeft = false;
 	private boolean mouseButtonRight = false;
 	/*private boolean spellSelection = false;	//TODO
@@ -97,11 +97,11 @@ public final class Display extends Canvas {
 	}
 	*/
 
-	public void playerTick() {
+	private void playerTick() {
 		if (mouseButtonLeft) {
 			try {
-				boolean cast = player.cast();
-				if (cast) {
+				int cast = player.cast();
+				for (int i = 0; i < cast ;i++) {
 					Point pom = Display.this.getMousePosition();
 					double orientation = Math.atan2(pom.y - this.getHeight() / 2, pom.x - this.getWidth() / 2);
 					WORLD.createNewSpell(player, orientation);
