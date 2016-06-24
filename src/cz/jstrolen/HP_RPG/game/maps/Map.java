@@ -1,5 +1,7 @@
 package cz.jstrolen.HP_RPG.game.maps;
 
+import cz.jstrolen.HP_RPG.game.ai.AI;
+import cz.jstrolen.HP_RPG.game.entities.AEntity;
 import cz.jstrolen.HP_RPG.game.entities.objects.Block;
 import cz.jstrolen.HP_RPG.game.entities.objects.Item;
 import cz.jstrolen.HP_RPG.game.entities.objects.ObjectFactory;
@@ -70,7 +72,10 @@ public class Map {
 			for (int i = 0; i < unitCount; i++) {
 				String[] params = br.readLine().split("-");
 				String[] positions = params[1].split("x");
-				units.add(UnitFactory.getUnit(Integer.parseInt(params[0]), Integer.parseInt(positions[0]), Integer.parseInt(positions[1])));
+				Unit unit = UnitFactory.getUnit(Integer.parseInt(params[0]), Integer.parseInt(positions[0]), Integer.parseInt(positions[1]));
+				unit.setAi(AI.getIntel(Integer.parseInt(params[2]), params[3]));
+
+				units.add(unit);
 			}
 			
 			br.close();
@@ -87,6 +92,16 @@ public class Map {
 		int positionX = (int) (originalBlock.getPositionX() / ObjectFactory.getBlockSize());
 		int positionY = (int) (originalBlock.getPositionY() / ObjectFactory.getBlockSize());
 		blocks[positionY][positionX] = newBlock;
+	}
+
+	public boolean isInMap(AEntity entity) {
+		double positionX = entity.getPositionX();
+		double positionY = entity.getPositionY();
+		if (positionX < 0 || positionY < 0) return false;
+		Block lastBlock = blocks[sizeY - 1][sizeX - 1];
+		if (positionX + entity.getSizeX() > lastBlock.getPositionX() + lastBlock.getSizeX()) return false;
+		if (positionY + entity.getSizeY() > lastBlock.getPositionY() + lastBlock.getSizeY()) return false;
+		return true;
 	}
 
 	public String getName() {

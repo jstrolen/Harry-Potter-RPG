@@ -4,17 +4,17 @@ package cz.jstrolen.HP_RPG.game.entities.units.transforms;
  * Created by Josef Stroleny
  */
 public class UnitTransformEffect {
-    private final EUnitTransform CHANGE;
+    private final EUnitTransformEffect CHANGE;
     private final double VALUE;
     private final double DURATION;
 
     public UnitTransformEffect(String change, double value, double duration) {
-        this.CHANGE = EUnitTransform.valueOf(change);
+        this.CHANGE = EUnitTransformEffect.valueOf(change);
         this.VALUE = value;
         this.DURATION = duration;
     }
 
-    public EUnitTransform getChange() {
+    public EUnitTransformEffect getChange() {
         return CHANGE;
     }
 

@@ -1,6 +1,6 @@
 package cz.jstrolen.HP_RPG.game.maps;
 
-import cz.jstrolen.HP_RPG.game.Settings;
+import cz.jstrolen.HP_RPG.game.GameSettings;
 import cz.jstrolen.HP_RPG.game.entities.AEntity;
 import cz.jstrolen.HP_RPG.game.entities.objects.Block;
 import cz.jstrolen.HP_RPG.game.entities.objects.Item;
@@ -12,7 +12,7 @@ import cz.jstrolen.HP_RPG.game.entities.units.Unit;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
-import static cz.jstrolen.HP_RPG.game.Settings.DRAW_DISTANCE;
+import static cz.jstrolen.HP_RPG.game.GameSettings.DRAW_DISTANCE;
 
 /**
  * Created by Josef Stroleny
@@ -26,7 +26,12 @@ public class World {
 	public void tick() {
 		for (int i = 0; i < map.getSpells().size(); i++) {
 			boolean distanceLeft = map.getSpells().get(i).move();
-			boolean hit = tryHit(map.getSpells().get(i));
+			if (!map.isInMap(map.getSpells().get(i))) {
+				map.getSpells().remove(i);
+				i--;
+				continue;
+			}
+			boolean hit = spellTryHit(map.getSpells().get(i));
 			if (!distanceLeft || hit) {
 				map.getSpells().remove(i);
 				i--;
@@ -34,10 +39,14 @@ public class World {
 		}
 
 		for (int i = 0; i < map.getUnits().size(); i++) {
-			map.getUnits().get(i).tick();
+			if (map.getUnits().get(i).tick() == null) map.getUnits().remove(i--);
 		}
 
-		/*
+		for (int i = 0; i < map.getUnits().size(); i++) {
+			map.getUnits().get(i).run(this);
+		}
+
+		/* TODO
 		List<Thread> threads = new ArrayList<>(map.getUnits().size());
 		for (int i = 0; i < map.getUnits().size(); i++) {
 			Thread t = new Thread(map.getUnits().get(i));
@@ -63,7 +72,7 @@ public class World {
 	}
 
 	private void drawBlocks(Graphics2D g) {
-		int drawDistance = Settings.DRAW_DISTANCE;
+		int drawDistance = GameSettings.DRAW_DISTANCE;
 		int blockSize = ObjectFactory.getBlockSize();
 		int startX = (int) Math.max((map.getUnits().get(0).getPositionX() - drawDistance) / blockSize, 0);
 		int endX = (int) Math.min((map.getUnits().get(0).getPositionX() + drawDistance) / blockSize, map.getSize().width - 1);
@@ -95,8 +104,8 @@ public class World {
 	}
 
 	private void drawBars(Graphics2D g) {
-		if (Settings.DRAW_HEALTH_BAR) {
-			g.setColor(Settings.HEALTH_BAR_COLOR);
+		if (GameSettings.DRAW_HEALTH_BAR) {
+			g.setColor(GameSettings.HEALTH_BAR_COLOR);
 			for (int i = 0; i < map.getUnits().size(); i++) {
 				if (Math.sqrt(Math.pow(map.getUnits().get(i).getPositionX() - map.getUnits().get(0).getPositionX(), 2) +
 						Math.pow(map.getUnits().get(i).getPositionY() - map.getUnits().get(0).getPositionY(), 2)) > DRAW_DISTANCE) continue;
@@ -104,8 +113,8 @@ public class World {
 			}
 		}
 
-		if (Settings.DRAW_SPELL_BAR) {
-			g.setColor(Settings.SPELL_BAR_COLOR);
+		if (GameSettings.DRAW_SPELL_BAR) {
+			g.setColor(GameSettings.SPELL_BAR_COLOR);
 			for (int i = 0; i < map.getUnits().size(); i++) {
 				if (Math.sqrt(Math.pow(map.getUnits().get(i).getPositionX() - map.getUnits().get(0).getPositionX(), 2) +
 						Math.pow(map.getUnits().get(i).getPositionY() - map.getUnits().get(0).getPositionY(), 2)) > DRAW_DISTANCE) continue;
@@ -125,30 +134,30 @@ public class World {
 		double positionY = entity.getPositionY();
 		entity.setPositionX(positionX + diffX);
 		entity.setPositionY(positionY + diffY);
-		if (tryIntersection(entity, false, true, false) == null) return;
+		if (tryIntersection(entity, false, true, false) == null && map.isInMap(entity)) return;
 
 		double newX = positionX, newY = positionY;
 		//X
-		for (int i = 1; i < Settings.INTERSECTION_STEPS; i++) {
+		for (int i = 1; i < GameSettings.INTERSECTION_STEPS; i++) {
 			newX = positionX + diffX / i;
 			entity.setPositionX(newX);
 			entity.setPositionY(newY);
-			if (tryIntersection(entity, false, true, false) == null) break;
+			if (tryIntersection(entity, false, true, false) == null && map.isInMap(entity)) break;
 			else newX = positionX;
 		}
 		//Y
-		for (int i = 1; i < Settings.INTERSECTION_STEPS; i++) {
+		for (int i = 1; i < GameSettings.INTERSECTION_STEPS; i++) {
 			newY = positionY + diffY / i;
 			entity.setPositionX(newX);
 			entity.setPositionY(newY);
-			if (tryIntersection(entity, false, true, false) == null) break;
+			if (tryIntersection(entity, false, true, false) == null && map.isInMap(entity)) break;
 			else newY = positionY;
 		}
 		entity.setPositionX(newX);
 		entity.setPositionY(newY);
 	}
 
-	private boolean tryHit(Spell spell) { //TODO
+	private boolean spellTryHit(Spell spell) { //TODO
 		AEntity intersect = tryIntersection(spell, true, false, false);
 		if (intersect == null) return false;
 		AEntity newEntity = intersect.hit(spell);
@@ -204,9 +213,9 @@ public class World {
 		return null;
 	}
 
-	public void createNewSpell(Unit caster, double orientation) {
-		Spell spell = SpellFactory.getSpell(caster, orientation);
-		if (spell != null) map.getSpells().add(spell);
+	public void createNewSpell(Unit caster, double orientation, boolean self) {
+		Spell spell = SpellFactory.getSpell(caster, orientation, self);
+		if (spell != null && spell.getCreateInstance()) map.getSpells().add(spell);
 	}
 
 	public int getWidth() {

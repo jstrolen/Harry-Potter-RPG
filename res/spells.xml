@@ -7,17 +7,19 @@
     <spellList>
         <spell>
             <id>0</id>
-            <name>episkey</name>
+            <name>episkeySpell</name>
             <title>Episkey</title>
             <description>Episkey</description>
-            <distanceVitality>1000</distanceVitality>
-            <speed>15</speed>
+            <distanceVitality>750</distanceVitality>
+            <speed>25</speed>
             <castTime>25</castTime>
             <dispersion>0</dispersion>
-            <effects />
+            <effects>
+                <effect>3</effect>
+            </effects>
             <objectSize>
-                <width>7</width>
-                <height>7</height>
+                <width>12</width>
+                <height>12</height>
             </objectSize>
             <color>
                 <r>200</r>
@@ -37,19 +39,20 @@
 
         <spell>
             <id>1</id>
-            <name>incendio</name>
+            <name>incendioSpell</name>
             <title>Incendio</title>
             <description>Incedio</description>
             <distanceVitality>200</distanceVitality>
             <speed>8.0</speed>
-            <castTime>1.0</castTime>
-            <dispersion>0.15</dispersion>
+            <castTime>0.75</castTime>
+            <dispersion>0.05</dispersion>
             <effects>
                 <effect>2</effect>
+                <effect>4</effect>
             </effects>
             <objectSize>
-                <width>8</width>
-                <height>8</height>
+                <width>10</width>
+                <height>10</height>
             </objectSize>
             <color>
                 <r>200</r>
@@ -69,17 +72,19 @@
 
         <spell>
             <id>2</id>
-            <name>protego</name>
+            <name>protegoSpell</name>
             <title>Protego</title>
             <description>Protego</description>
-            <distanceVitality>100</distanceVitality>
+            <distanceVitality>350</distanceVitality>
             <speed>10</speed>
             <castTime>10</castTime>
             <dispersion>0</dispersion>
-            <effects />
+            <effects>
+                <effect>5</effect>
+            </effects>
             <objectSize>
-                <width>25</width>
-                <height>25</height>
+                <width>30</width>
+                <height>30</height>
             </objectSize>
             <color>
                 <r>0</r>
@@ -99,19 +104,20 @@
 
         <spell>
             <id>3</id>
-            <name>reducto</name>
+            <name>reductoSpell</name>
             <title>Reducto</title>
             <description>Reducto</description>
             <distanceVitality>1000</distanceVitality>
-            <speed>10</speed>
+            <speed>20</speed>
             <castTime>25</castTime>
             <dispersion>0</dispersion>
             <effects>
                 <effect>0</effect>
+                <effect>6</effect>
             </effects>
             <objectSize>
-                <width>10</width>
-                <height>10</height>
+                <width>15</width>
+                <height>15</height>
             </objectSize>
             <color>
                 <r>150</r>
@@ -131,17 +137,19 @@
 
         <spell>
             <id>4</id>
-            <name>wingardiumLeviosa</name>
+            <name>wingardiumLeviosaSpell</name>
             <title>Wingardium Leviosa</title>
             <description>Wingardium Leviosa</description>
-            <distanceVitality>1000</distanceVitality>
+            <distanceVitality>500</distanceVitality>
             <speed>20</speed>
             <castTime>20</castTime>
             <dispersion>0</dispersion>
-            <effects />
+            <effects>
+                <effect>7</effect>
+            </effects>
             <objectSize>
-                <width>5</width>
-                <height>5</height>
+                <width>10</width>
+                <height>10</height>
             </objectSize>
             <color>
                 <r>50</r>
@@ -156,6 +164,102 @@
             <image>
                 <x>4</x>
                 <y>0</y>
+            </image>
+        </spell>
+
+        <spell>
+            <id>5</id>
+            <name>levicorpusSpell</name>
+            <title>Levicorpus</title>
+            <description>Levicorpus</description>
+            <distanceVitality>800</distanceVitality>
+            <speed>25</speed>
+            <castTime>20</castTime>
+            <dispersion>0</dispersion>
+            <effects>
+                <effect>8</effect>
+            </effects>
+            <objectSize>
+                <width>10</width>
+                <height>10</height>
+            </objectSize>
+            <color>
+                <r>255</r>
+                <g>200</g>
+                <b>255</b>
+            </color>
+
+            <tileSize>
+                <width>100</width>
+                <height>100</height>
+            </tileSize>
+            <image>
+                <x>0</x>
+                <y>1</y>
+            </image>
+        </spell>
+
+        <spell>
+            <id>6</id>
+            <name>sectumsempraSpell</name>
+            <title>Sectumsempra</title>
+            <description>Sectumsempra</description>
+            <distanceVitality>1200</distanceVitality>
+            <speed>20</speed>
+            <castTime>40</castTime>
+            <dispersion>0</dispersion>
+            <effects>
+                <effect>9</effect>
+            </effects>
+            <objectSize>
+                <width>10</width>
+                <height>10</height>
+            </objectSize>
+            <color>
+                <r>100</r>
+                <g>255</g>
+                <b>100</b>
+            </color>
+
+            <tileSize>
+                <width>100</width>
+                <height>100</height>
+            </tileSize>
+            <image>
+                <x>1</x>
+                <y>1</y>
+            </image>
+        </spell>
+
+        <spell>
+            <id>7</id>
+            <name>avadaKedavraSpell</name>
+            <title>Avada Kedavra</title>
+            <description>Avada Kedavra</description>
+            <distanceVitality>1000</distanceVitality>
+            <speed>30</speed>
+            <castTime>60</castTime>
+            <dispersion>0</dispersion>
+            <effects>
+                <effect>10</effect>
+            </effects>
+            <objectSize>
+                <width>10</width>
+                <height>10</height>
+            </objectSize>
+            <color>
+                <r>0</r>
+                <g>255</g>
+                <b>0</b>
+            </color>
+
+            <tileSize>
+                <width>100</width>
+                <height>100</height>
+            </tileSize>
+            <image>
+                <x>2</x>
+                <y>1</y>
             </image>
         </spell>
     </spellList>

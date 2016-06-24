@@ -111,8 +111,8 @@ public class UnitFactory {
                 List<UnitTransformEffect> transformTypes = new ArrayList<>();
                 NodeList transformList = nodes.item(13).getChildNodes();
                 for (int j = 1; j < transformList.getLength(); j += 2) {
-                    double value = Double.valueOf(transformList.item(j).getAttributes().item(0).getTextContent());
-                    double duration = Double.valueOf(transformList.item(j).getAttributes().item(1).getTextContent());
+                    double value = Double.valueOf(transformList.item(j).getAttributes().item(1).getTextContent());
+                    double duration = Double.valueOf(transformList.item(j).getAttributes().item(0).getTextContent());
                     String text = transformList.item(j).getTextContent();
                     transformTypes.add(new UnitTransformEffect(text, value, duration));
                 }
@@ -130,12 +130,7 @@ public class UnitFactory {
         return new Unit(x, y, UNIT_TYPES.get(id));
     }
 
-    public static UnitChange getUnitTransform(int unitId, int transformId) {
-        if (UNIT_TRANSFORMS.get(transformId).getExcludes().contains(unitId)) return null;
-        return new UnitChange(UNIT_TRANSFORMS.get(transformId));
-    }
-
     public static List<UnitChange> getAllUnitChanges(int effect) {
-        return UNIT_TRANSFORMS.values().stream().filter(ut -> ut.getEffects().contains(effect)).map(UnitChange::new).collect(Collectors.toList());
+        return UNIT_TRANSFORMS.values().stream().filter(ut -> ut.getStarterEffectsIds().contains(effect)).map(UnitChange::new).collect(Collectors.toList());
     }
 }

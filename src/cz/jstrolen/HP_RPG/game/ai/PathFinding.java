@@ -12,60 +12,60 @@ import java.util.List;
 
 class PathFinding {
 	
-	public static List<Container> findPath(AObject move, AObject[][] objects, List<Item> items, List<Unit> Units, int[] end) {
+	public static List<Container> findPath(Unit unit, AObject[][] objects, List<Item> items, List<Unit> units, int[] end) {
 		List<Container> moves = new ArrayList<>();
 		int endX = end[0] / ObjectFactory.getBlockSize();
 		int endY = end[1] / ObjectFactory.getBlockSize();
-		int startX = (int) move.getPositionX() / ObjectFactory.getBlockSize();
-		int startY = (int) move.getPositionY() / ObjectFactory.getBlockSize();
+		int startX = (int) unit.getPositionX() / ObjectFactory.getBlockSize();
+		int startY = (int) unit.getPositionY() / ObjectFactory.getBlockSize();
 		if (startX == endX && startY == endY) {
-			trim(moves, move, startX, startY);
+			trim(moves, unit, startX, startY);
 			return moves;
 		}
 		Deque<BlockHelp> list = new LinkedList<>();
 		
 		BlockHelp[][] blHlp = new BlockHelp[objects.length][objects[0].length];
-		for (int x = 0; x < objects.length; x++) {
-			for (int y = 0; y < objects[0].length; y++) {
-				blHlp[x][y] = new BlockHelp(objects[x][y], x, y);
+		for (int y = 0; y < objects.length; y++) {
+			for (int x = 0; x < objects[0].length; x++) {
+				blHlp[y][x] = new BlockHelp(objects[y][x], x, y);
 			}
 		}
-		blHlp[startX][startY].predecessor = blHlp[startX][startY];
-		list.addLast(blHlp[startX][startY]);
+		blHlp[startY][startX].predecessor = blHlp[startY][startX];
+		list.addLast(blHlp[startY][startX]);
 		BlockHelp pom = list.removeFirst();
-		while (pom.object != objects[endX][endY]) {
+		while (pom.object != objects[endY][endX]) {
 			try {
-				if (tryMove(move, blHlp, pom, -1, 0)) {
-					list.addLast(blHlp[pom.x - 1][pom.y]);
-					blHlp[pom.x - 1][pom.y].predecessor = pom;
+				if (tryMove(unit, blHlp, pom, -1, 0)) {
+					list.addLast(blHlp[pom.y - 1][pom.x]);
+					blHlp[pom.y - 1][pom.x].predecessor = pom;
 				}
 			} catch (Exception e) {}
 			try {
-				if (tryMove(move, blHlp, pom, 1, 0)) {
-					list.addLast(blHlp[pom.x + 1][pom.y]);
-					blHlp[pom.x + 1][pom.y].predecessor = pom;
+				if (tryMove(unit, blHlp, pom, 1, 0)) {
+					list.addLast(blHlp[pom.y + 1][pom.x]);
+					blHlp[pom.y + 1][pom.x].predecessor = pom;
 				}
 			} catch (Exception e) {}
 			try {
-				if (tryMove(move, blHlp, pom, 0, -1)) {
-					list.addLast(blHlp[pom.x][pom.y - 1]);
-					blHlp[pom.x][pom.y - 1].predecessor = pom;
+				if (tryMove(unit, blHlp, pom, 0, -1)) {
+					list.addLast(blHlp[pom.y][pom.x - 1]);
+					blHlp[pom.y][pom.x - 1].predecessor = pom;
 				}
 			} catch (Exception e) {}
 			try {
-				if (tryMove(move, blHlp, pom, 0, 1)) {
-					list.addLast(blHlp[pom.x][pom.y + 1]);
-					blHlp[pom.x][pom.y + 1].predecessor = pom;
+				if (tryMove(unit, blHlp, pom, 0, 1)) {
+					list.addLast(blHlp[pom.y][pom.x + 1]);
+					blHlp[pom.y][pom.x + 1].predecessor = pom;
 				}
 			} catch (Exception e) {}
 			if (list.isEmpty()) {
-				trim(moves, move, startX, startY);
+				trim(moves, unit, startX, startY);
 				return moves;
 			}
 			else pom = list.removeFirst();
 		}
 		
-		while (pom.object != objects[startX][startY]) {
+		while (pom.object != objects[startY][startX]) {
 			int x = pom.x;
 			int y = pom.y;
 			pom = pom.predecessor;
@@ -75,20 +75,20 @@ class PathFinding {
 			else if (x == pom.x && y > pom.y) moves.add(new Container(EMoves.DOWN, ObjectFactory.getBlockSize()));
 		}
 		
-		trim(moves, move, startX, startY);
+		trim(moves, unit, startX, startY);
 		return moves;
 	}
 	
-	private static boolean tryMove(AObject move, BlockHelp[][] blHlp, BlockHelp pom, int x, int y) {
-		if (blHlp[pom.x + x][pom.y + y].predecessor != null) return false;
+	private static boolean tryMove(Unit move, BlockHelp[][] blHlp, BlockHelp pom, int x, int y) {
+		if (blHlp[pom.y + y][pom.x + x].predecessor != null) return false;
 		
 		int sizeX = (int) ((move.getAttributes().getSizeX() - 0.01) / ObjectFactory.getBlockSize());
 		int sizeY = (int) ((move.getAttributes().getSizeY() - 0.01) / ObjectFactory.getBlockSize());
 		
 		boolean possible = true;
-		for (int i = 0; i <= sizeX; i++) {
-			for (int j = 0; j <= sizeY; j++) {
-				if (!blHlp[pom.x + x + i][pom.y + y + j].object.getAttributes().isCrossable()) {
+		for (int i = 0; i <= sizeY; i++) {
+			for (int j = 0; j <= sizeX; j++) {
+				if (!blHlp[pom.y + y + i][pom.x + x + j].object.getAttributes().isCrossable()) {
 					possible = false;
 					break;
 				}
@@ -99,7 +99,7 @@ class PathFinding {
 		return possible;
 	}
 	
-	private static void trim(List<Container> moves, AObject move, int startX, int startY) {
+	private static void trim(List<Container> moves, Unit move, int startX, int startY) {
 		double difX = move.getPositionX() - startX * ObjectFactory.getBlockSize();
 		double difY = move.getPositionY() - startY * ObjectFactory.getBlockSize();
 		if (difX != 0.0) moves.add(new Container(EMoves.LEFT, difX));

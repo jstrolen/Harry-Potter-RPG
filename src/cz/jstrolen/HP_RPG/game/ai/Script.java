@@ -1,7 +1,9 @@
 package cz.jstrolen.HP_RPG.game.ai;
 
-import cz.jstrolen.HP_RPG.game.maps.World;
 import cz.jstrolen.HP_RPG.game.entities.units.Unit;
+import cz.jstrolen.HP_RPG.game.maps.World;
+
+import java.util.Random;
 
 public class Script extends AI {
 	public static final int ID = 0;
@@ -12,24 +14,24 @@ public class Script extends AI {
 	}
 
 	@Override
-	public synchronized void step(Unit Unit, World world) {
-		/*double speed = Unit.getSpeed(); TODO
+	public synchronized void step(Unit unit, World world) {
+		double speed = unit.getSpeed();
 		Random ran = new Random();
 		int type = ran.nextInt(4);
 		switch (type) {
 		case 0:
-			Unit.move(speed, 0, world);
+			world.move(unit, speed, 0);
 			break;
 		case 1:
-			Unit.move(0, speed, world);
+			world.move(unit, 0, speed);
 			break;
 		case 2:
-			Unit.move(-speed, 0, world);
+			world.move(unit, -speed, 0);
 			break;
 		case 3:
-			Unit.move(0, -speed, world);
+			world.move(unit, 0, -speed);
 			break;
-		} */
+		}
 	}
 
 	@Override

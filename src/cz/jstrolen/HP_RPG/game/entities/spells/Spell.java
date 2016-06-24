@@ -11,17 +11,19 @@ import java.awt.*;
 public class Spell extends AEntity {
 	private final SpellAttributes spellAttributes;
 	private final Unit caster;
+	private final boolean createInstance;
 
 	private double orientation;
 	private double remainingDistance;
-
 	
-	public Spell(Unit caster, double positionX, double positionY, double orientation, SpellAttributes spellAttributes) {
+	public Spell(boolean self, Unit caster, double positionX, double positionY, double orientation, SpellAttributes spellAttributes) {
 		super(positionX, positionY, spellAttributes.getSizeX(), spellAttributes.getSizeY());
 		this.caster = caster;
 		this.orientation = orientation;
 		this.spellAttributes = spellAttributes;
 		this.remainingDistance = spellAttributes.getDistanceVitality();
+		createInstance = !self;
+		if (self) caster.hit(this);
 	}
 
 	@Override
@@ -63,4 +65,6 @@ public class Spell extends AEntity {
 	}
 
 	public SpellAttributes getAttributes() { return spellAttributes; }
+
+	public boolean getCreateInstance() { return createInstance; };
 }

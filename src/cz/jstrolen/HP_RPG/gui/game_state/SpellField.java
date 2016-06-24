@@ -1,4 +1,6 @@
-package cz.jstrolen.HP_RPG.gui;
+package cz.jstrolen.HP_RPG.gui.game_state;
+
+import cz.jstrolen.HP_RPG.gui.GuiSettings;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -29,16 +31,16 @@ final class SpellField {
 	}
 	
 	public void draw(Graphics2D g) {
-		g.setFont(DrawSettings.FONT);
+		g.setFont(GuiSettings.FONT);
 		Font font = g.getFont();
 		FontRenderContext frc = g.getFontRenderContext();
 		String spellText = TEXT;
 		sizeX = (int) font.getStringBounds(spellText, frc).getWidth();
 		sizeY = (int) font.getStringBounds(spellText, frc).getHeight();	
 		
-		g.setColor(DrawSettings.TEXT_COLOR);
+		g.setColor(GuiSettings.TEXT_BACKGROUND_COLOR);
 		g.fillRect(DRAW_X - sizeX / 2 - FONT_INSETS, DRAW_Y - sizeY / 2 - FONT_INSETS, sizeX + 5 * FONT_INSETS, sizeY + 5 * FONT_INSETS);
-		g.setColor(DrawSettings.INFO_TEXT);
+		g.setColor(GuiSettings.TEXT_COLOR);
 		g.drawString(spellText, DRAW_X - sizeX / 2, DRAW_Y  + sizeY / 2);
 	}
 

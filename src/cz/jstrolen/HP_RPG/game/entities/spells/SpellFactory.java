@@ -11,15 +11,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Josef Stroleny
  */
 public class SpellFactory {
+    private static final Random RANDOM = new Random();
     private static final String SPELL_PATH = "spells.xml";
     private static final Map<Integer, SpellAttributes> SPELL_TYPES = new HashMap<>();
 
@@ -79,15 +77,15 @@ public class SpellFactory {
         }
     }
 
-    public static Spell getSpell(Unit caster, double orientation) {
+    public static Spell getSpell(Unit caster, double orientation, boolean self) {
         int id = caster.getActualSpell();
         if (!SPELL_TYPES.containsKey(id)) return null;
         SpellAttributes attributes = SPELL_TYPES.get(id);
         double startX = caster.getPositionX() + caster.getSizeX() / 2 - attributes.getSizeX() / 2;
         double startY = caster.getPositionY() + caster.getSizeY() / 2 - attributes.getSizeY() / 2;
-        if (attributes.getDispersion() > 0) orientation += ((2 * Math.random()) - 1) * attributes.getDispersion();
+        if (attributes.getDispersion() > 0) orientation += ((2 * RANDOM.nextGaussian()) - 1) * attributes.getDispersion();
 
-        return new Spell(caster, startX, startY, orientation, attributes);
+        return new Spell(self, caster, startX, startY, orientation, attributes);
     }
 
     public static SpellAttributes getSpellAttributes(int id) {

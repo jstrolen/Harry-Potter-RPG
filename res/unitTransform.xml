@@ -2,90 +2,110 @@
     <transforms>
         <transform>
             <id>0</id>
-            <name>hang</name>
-            <title>Hang</title>
-            <description>Hang</description>
-            <transformEffects />
-            <excludes />
-            <changes>
-                <change value="1" duration="5">REVERSE</change>
-                <change value="0" duration="6">SPEED</change>
-            </changes>
-        </transform>
-
-        <transform>
-            <id>1</id>
-            <name>heal</name>
-            <title>Heal</title>
-            <description>Heal</description>
-            <transformEffects />
-            <excludes />
-            <changes>
-                <change value="50" duration="2">HEAL</change>
-            </changes>
-        </transform>
-
-        <transform>
-            <id>2</id>
-            <name>immobilize</name>
-            <title>Immobilize</title>
-            <description>Immobilize</description>
-            <transformEffects />
-            <excludes />
-            <changes>
-                <change value="0" duration="10">SPEED</change>
-            </changes>
-        </transform>
-
-        <transform>
-            <id>3</id>
-            <name>stopCast</name>
-            <title>Stop Cast</title>
-            <description>Stop Cast</description>
-            <transformEffects />
-            <excludes />
-            <changes>
-                <change value="0" duration="15">CAST_SPEED</change>
-            </changes>
-        </transform>
-
-        <transform>
-            <id>3</id>
-            <name>injure</name>
-            <title>Injure</title>
-            <description>Injure</description>
-            <transformEffects />
-            <excludes />
-            <changes>
-                <change value="25" duration="1">INJURE</change>
-            </changes>
-        </transform>
-
-        <transform>
-            <id>4</id>
-            <name>kill</name>
-            <title>Kill</title>
-            <description>Kill</description>
+            <name>episkey</name>
+            <title>Episkey</title>
+            <description>Episkey</description>
             <transformEffects>
                 <transformEffect>3</transformEffect>
             </transformEffects>
             <excludes />
             <changes>
-                <change value="1" duration="0">KILL</change>
+                <change value="25" duration="1">HEAL</change>
             </changes>
         </transform>
 
         <transform>
-            <id>5</id>
-            <name>burn</name>
-            <title>Burn</title>
-            <description>Burn</description>
+            <id>1</id>
+            <name>incendio</name>
+            <title>Incendio</title>
+            <description>Incendio</description>
             <transformEffects>
-                <transformEffect>2</transformEffect>
+                <transformEffect>4</transformEffect>
             </transformEffects>
             <excludes />
             <changes>
-                <change value="5" duration="1">INJURE</change>
+                <change value="1" duration="5">INJURE</change>
+            </changes>
+        </transform>
+
+        <transform>
+            <id>2</id>
+            <name>protego</name>
+            <title>Protego</title>
+            <description>Protego</description>
+            <transformEffects>
+                <transformEffect>5</transformEffect>
+            </transformEffects>
+            <excludes />
+            <changes />
+        </transform>
+
+        <transform>
+            <id>3</id>
+            <name>reducto</name>
+            <title>Reducto</title>
+            <description>Reducto</description>
+            <transformEffects>
+                <transformEffect>6</transformEffect>
+            </transformEffects>
+            <excludes />
+            <changes>
+                <change value="5" duration="0">INJURE_PERC</change>
+            </changes>
+        </transform>
+
+        <transform>
+            <id>4</id>
+            <name>wingardiumLeviosa</name>
+            <title>Wingardium Leviosa</title>
+            <description>Wingardium Leviosa</description>
+            <transformEffects>
+                <transformEffect>7</transformEffect>
+            </transformEffects>
+            <excludes />
+            <changes />
+        </transform>
+
+        <transform>
+            <id>5</id>
+            <name>levicorpus</name>
+            <title>Levicorpus</title>
+            <description>Levicorpus</description>
+            <transformEffects>
+                <transformEffect>8</transformEffect>
+            </transformEffects>
+            <excludes />
+            <changes>
+                <change duration="5" value="1">REVERSE</change>
+                <change duration="7" value="0">SPEED</change>
+            </changes>
+        </transform>
+
+        <transform>
+            <id>6</id>
+            <name>sectumsempra</name>
+            <title>Sectumsempra</title>
+            <description>Sectumsempra</description>
+            <transformEffects>
+                <transformEffect>9</transformEffect>
+            </transformEffects>
+            <excludes />
+            <changes>
+                <change duration="5" value="50">INJURE_PERC</change>
+            </changes>
+        </transform>
+
+        <transform>
+            <id>7</id>
+            <name>avadaKedavra</name>
+            <title>Avada Kedavra</title>
+            <description>Avada Kedavra</description>
+            <transformEffects>
+                <transformEffect>10</transformEffect>
+            </transformEffects>
+            <excludes />
+            <changes>
+                <change duration="0" value="1">KILL</change>
             </changes>
         </transform>
 

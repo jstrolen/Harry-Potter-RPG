@@ -3,7 +3,7 @@ package cz.jstrolen.HP_RPG.game.entities.units.transforms;
 /**
  * Created by Josef Stroleny
  */
-public enum EUnitTransform {
+public enum EUnitTransformEffect {
     INJURE("injure"), INJURE_PERC("injure_perc"),
     HEAL("heal"), HEAL_PERC("heal_perc"),
     SPEED("speed"), SPEED_PERC("speed_perc"),
@@ -13,7 +13,7 @@ public enum EUnitTransform {
     KILL("kill");
 
     private final String name;
-    EUnitTransform(String s) {
+    EUnitTransformEffect(String s) {
         name = s;
     }
 

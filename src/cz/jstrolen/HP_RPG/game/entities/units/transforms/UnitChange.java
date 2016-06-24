@@ -19,56 +19,62 @@ public class UnitChange {
 
     public boolean tick(Unit u) {
         long lastTick = u.getLastTick();
-        long nowTick = System.currentTimeMillis();
+        long nowTick = System.nanoTime();
         double value;
 
         for (int i = 0; i < remainingTimes.length; i++) {
-            EUnitTransform transform = TRANSFORM.getUnitEffects().get(i).getChange();
-            if (remainingTimes[i] <= 0) {
-                if (transform == EUnitTransform.SPEED || transform == EUnitTransform.SPEED_PERC) restoreSpeed(u);
-                else if (transform == EUnitTransform.CAST_SPEED || transform == EUnitTransform.CAST_SPEED_PERC) restoreCastSpeed(u);
-                else if (transform == EUnitTransform.REVERSE) restoreReverse(u);
+            EUnitTransformEffect transform = TRANSFORM.getUnitEffects().get(i).getChange();
+            if (remainingTimes[i] < 0) continue;
+            value = TRANSFORM.getUnitEffects().get(i).getValue();
+            if (remainingTimes[i] == 0) {
+                remainingTimes[i] -= 1;
+                if (transform == EUnitTransformEffect.INJURE) tickInjure(u, value);
+                else if (transform == EUnitTransformEffect.INJURE_PERC) tickInjurePerc(u, value);
+                else if (transform == EUnitTransformEffect.HEAL) tickHeal(u, value);
+                else if (transform == EUnitTransformEffect.HEAL_PERC) tickHealPerc(u, value);
+                else if (transform == EUnitTransformEffect.KILL) kill(u);
+                else if (transform == EUnitTransformEffect.SPEED || transform == EUnitTransformEffect.SPEED_PERC) restoreSpeed(u);
+                else if (transform == EUnitTransformEffect.CAST_SPEED || transform == EUnitTransformEffect.CAST_SPEED_PERC) restoreCastSpeed(u);
+                else if (transform == EUnitTransformEffect.REVERSE) restoreReverse(u);
                 continue;
             }
-            value = TRANSFORM.getUnitEffects().get(i).getValue();
 
-            if (transform == EUnitTransform.INJURE ||transform == EUnitTransform.INJURE_PERC ||
-                    transform == EUnitTransform.HEAL ||transform == EUnitTransform.HEAL_PERC) {
+            if (transform == EUnitTransformEffect.INJURE ||transform == EUnitTransformEffect.INJURE_PERC ||
+                    transform == EUnitTransformEffect.HEAL ||transform == EUnitTransformEffect.HEAL_PERC) {
                 double duration = TRANSFORM.getUnitEffects().get(i).getDuration();
-                if (duration > 0) {
-                    double valuePerSec = value / duration;
-                    double diff = (nowTick - lastTick) / 1000.0;
-                    diff = Math.max(diff, remainingTimes[i]);
-                    value = Math.min(valuePerSec * diff, value);
-                    remainingTimes[i] -= diff;
-                }
-                if (transform == EUnitTransform.INJURE) tickInjure(u, value);
-                else if (transform == EUnitTransform.INJURE_PERC) tickInjurePerc(u, value);
-                else if (transform == EUnitTransform.HEAL) tickHeal(u, value);
+                double valuePerSec = value / duration;
+                double diff = (nowTick - lastTick) / 1000000000.0;
+                diff = Math.min(diff, remainingTimes[i]);
+                value = Math.min(valuePerSec * diff, value);
+                remainingTimes[i] -= diff;
+                if (remainingTimes[i] == 0) remainingTimes[i] = -1;
+
+                if (transform == EUnitTransformEffect.INJURE) tickInjure(u, value);
+                else if (transform == EUnitTransformEffect.INJURE_PERC) tickInjurePerc(u, value);
+                else if (transform == EUnitTransformEffect.HEAL) tickHeal(u, value);
                 else tickHealPerc(u, value);
-            } else if (transform == EUnitTransform.HEALTH_PERC ||transform == EUnitTransform.KILL) {
-                remainingTimes[i] = 0;
-                if (transform == EUnitTransform.HEALTH_PERC) healthPerc(u, value);
+            } else if (transform == EUnitTransformEffect.HEALTH_PERC ||transform == EUnitTransformEffect.KILL) {
+                remainingTimes[i] = -1;
+                if (transform == EUnitTransformEffect.HEALTH_PERC) healthPerc(u, value);
                 else kill(u);
             } else {
-                remainingTimes[i] -= (nowTick - lastTick) / 1000.0;
-                if (transform == EUnitTransform.SPEED) tickSpeed(u, value);
-                else if (transform == EUnitTransform.SPEED_PERC) tickSpeedPerc(u, value);
-                else if (transform == EUnitTransform.CAST_SPEED) tickCastSpeed(u, value);
-                else if (transform == EUnitTransform.CAST_SPEED_PERC) tickCastSpeedPerc(u, value);
-                else if (transform == EUnitTransform.REVERSE) reverse(u);
+                remainingTimes[i] -= Math.min((nowTick - lastTick) / 1000000000.0, remainingTimes[i]);
+                if (transform == EUnitTransformEffect.SPEED) tickSpeed(u, value);
+                else if (transform == EUnitTransformEffect.SPEED_PERC) tickSpeedPerc(u, value);
+                else if (transform == EUnitTransformEffect.CAST_SPEED) tickCastSpeed(u, value);
+                else if (transform == EUnitTransformEffect.CAST_SPEED_PERC) tickCastSpeedPerc(u, value);
+                else if (transform == EUnitTransformEffect.REVERSE) reverse(u);
             }
         }
 
         boolean end = true;
         for (double remainingTime : remainingTimes) {
-            if (remainingTime > 0) {
+            if (remainingTime >= 0) {
                 end = false;
                 break;
             }
         }
 
-        u.setLastTick(nowTick);
         return end;
     }
 
@@ -77,39 +83,37 @@ public class UnitChange {
     }
 
     private void tickInjurePerc(Unit u, double value) {
-        u.setHealth(u.getHealth() - u.getAttributes().getHealth() / value);
+        u.setHealth(Math.max(u.getHealth() - u.getAttributes().getHealth() * (value / 100), 0));
     }
 
     private void tickHeal(Unit u, double value) {
-        u.setHealth(Math.max(u.getHealth() + value, u.getAttributes().getHealth()));
+        u.setHealth(Math.min(u.getHealth() + value, u.getAttributes().getHealth()));
     }
 
     private void tickHealPerc(Unit u, double value) {
-        u.setHealth(Math.max(u.getHealth() + u.getAttributes().getHealth() / value, u.getAttributes().getHealth()));
+        u.setHealth(Math.min(u.getHealth() + u.getAttributes().getHealth() * (value / 100), u.getAttributes().getHealth()));
     }
 
     private void tickSpeed(Unit u, double value) {
-        u.setSpeed(u.getSpeed() + value);
+        u.setSpeed(Math.max(value, 0));
     }
 
     private void tickSpeedPerc(Unit u, double value) {
-        u.setSpeed(u.getSpeed() + u.getAttributes().getSpeed() / value);
+        u.setSpeed(Math.max(u.getAttributes().getSpeed() * (value / 100), 0));
     }
 
     private void tickCastSpeed(Unit u, double value) {
-        u.setCastSpeed(u.getCastSpeed() + value);
+        u.setCastSpeed(Math.max(u.getCastSpeed() + value, 0));
     }
 
     private void tickCastSpeedPerc(Unit u, double value) {
-        u.setCastSpeed(u.getCastSpeed() + u.getAttributes().getCastSpeed() / value);
+        u.setCastSpeed(Math.max(u.getCastSpeed() + u.getAttributes().getCastSpeed() * (value / 100), 0));
     }
 
-    private void reverse(Unit u) {
-        //TODO
-    }
+    private void reverse(Unit u) { u.setHanging(true); }
 
     private void healthPerc(Unit u, double value) {
-        u.setHealth(u.getAttributes().getHealth() / value);
+        u.setHealth(Math.max(u.getAttributes().getHealth() * (value / 100), 0));
     }
 
     private void kill(Unit u) {
@@ -120,7 +124,5 @@ public class UnitChange {
 
     private void restoreCastSpeed(Unit u ) { u.setCastSpeed((u.getAttributes().getCastSpeed())); }
 
-    private void restoreReverse(Unit u) {
-        //TODO
-    }
+    private void restoreReverse(Unit u) { u.setHanging(false); }
 }

@@ -1,4 +1,6 @@
-package cz.jstrolen.HP_RPG.gui;
+package cz.jstrolen.HP_RPG.gui.game_state;
+
+import cz.jstrolen.HP_RPG.gui.GuiSettings;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,17 +10,17 @@ import java.awt.image.BufferStrategy;
 /**
  * Created by Josef Stroleny
  */
-final class Game extends JFrame implements KeyListener, MouseListener, MouseWheelListener, Runnable {
+public final class Game extends JFrame implements KeyListener, MouseListener, MouseWheelListener, Runnable {
 	private final Thread gameThread;
 	private final Display display;
 	private boolean running;
 	private boolean paused;
 
 	public Game() {
-		this.setSize(DrawSettings.SIZE);
-		this.setMinimumSize(DrawSettings.SIZE);
-		this.setMaximumSize(DrawSettings.SIZE);
-		this.setTitle(DrawSettings.TITLE);
+		this.setSize(GuiSettings.SIZE);
+		this.setMinimumSize(GuiSettings.SIZE);
+		this.setMaximumSize(GuiSettings.SIZE);
+		this.setTitle(GuiSettings.TITLE);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		this.add(display = new Display(this));
@@ -39,12 +41,12 @@ final class Game extends JFrame implements KeyListener, MouseListener, MouseWhee
 
 	@Override
 	public void run() {
-		final double GAME_HERTZ = DrawSettings.GAME_HERTZ;
+		final double GAME_HERTZ = GuiSettings.GAME_HERTZ;
 		final double TIME_BETWEEN_UPDATES = 1000000000 / GAME_HERTZ;
-		final int MAX_UPDATES_BEFORE_RENDER = DrawSettings.MAX_UPDATES_BEFORE_RENDER;
+		final int MAX_UPDATES_BEFORE_RENDER = GuiSettings.MAX_UPDATES_BEFORE_RENDER;
 		double lastUpdateTime = System.nanoTime();
 		double lastRenderTime;
-		final double TARGET_FPS = DrawSettings.TARGET_FPS;
+		final double TARGET_FPS = GuiSettings.TARGET_FPS;
 		final double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / TARGET_FPS;
 		double now;
 
@@ -87,7 +89,7 @@ final class Game extends JFrame implements KeyListener, MouseListener, MouseWhee
 		BufferStrategy bs = display.getBufferStrategy();
 		Graphics2D g;
 		if (bs == null) {
-			display.createBufferStrategy(DrawSettings.BUFFER_STRATEGY);
+			display.createBufferStrategy(GuiSettings.BUFFER_STRATEGY);
 			bs = display.getBufferStrategy();
 			g = (Graphics2D) bs.getDrawGraphics();
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -97,12 +99,17 @@ final class Game extends JFrame implements KeyListener, MouseListener, MouseWhee
 			g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
 			g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
 			g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+			g.setFont(GuiSettings.FONT);
 			return;
 		}
 		g = (Graphics2D) bs.getDrawGraphics();
 		display.draw(g);
 		bs.show();
 		g.dispose();
+	}
+
+	public void setPause(boolean pause) {
+		this.paused = pause;
 	}
 
 	@Override
@@ -113,32 +120,23 @@ final class Game extends JFrame implements KeyListener, MouseListener, MouseWhee
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
-			/*if (spellSelection) {		//TODO
-				for (int i = 0; i < spellFields.size(); i++) {
-					if (spellFields.get(i).contains(e.getPoint())) {
-						//player.setSpell(spellFields.get(i).getId());
-						spellSelection = false;
-						Display.this.Game.setPaused(spellSelection);
-						break;
-					}
-				}
-			}
-			else */
 			display.setMouseButtonLeft(true);
 		}
-		else if (e.getButton() == MouseEvent.BUTTON2) {
-			//spellSelection = true;
-			//Display.this.Game.setPaused(spellSelection); TODO
+		else if (e.getButton() == MouseEvent.BUTTON3) {
+			display.setMouseButtonRight(true);
+		} else if (e.getButton() == MouseEvent.BUTTON2) {
+			display.setMouseButtonMiddle(true);
 		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
-			/*if (!spellSelection) {	//TODO
-				mouseButton1 = false;
-			}*/
 			display.setMouseButtonLeft(false);
+		} else if (e.getButton() == MouseEvent.BUTTON3) {
+			display.setMouseButtonRight(false);
+		} else if (e.getButton() == MouseEvent.BUTTON2) {
+			display.setMouseButtonMiddle(false);
 		}
 	}
 

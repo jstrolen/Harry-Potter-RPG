@@ -4,7 +4,7 @@ import cz.jstrolen.HP_RPG.game.maps.World;
 import cz.jstrolen.HP_RPG.game.entities.units.Unit;
 
 public abstract class AI {
-	public abstract void step(Unit Unit, World world);
+	public abstract void step(Unit unit, World world);
 	
 	public abstract int getId();
 	

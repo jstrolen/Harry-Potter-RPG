@@ -1,11 +1,12 @@
 package cz.jstrolen.HP_RPG.game.entities.units;
 
-import cz.jstrolen.HP_RPG.game.Settings;
+import cz.jstrolen.HP_RPG.game.GameSettings;
 import cz.jstrolen.HP_RPG.game.ai.AI;
 import cz.jstrolen.HP_RPG.game.entities.AEntity;
 import cz.jstrolen.HP_RPG.game.entities.spells.Spell;
 import cz.jstrolen.HP_RPG.game.entities.spells.SpellFactory;
 import cz.jstrolen.HP_RPG.game.entities.units.transforms.UnitChange;
+import cz.jstrolen.HP_RPG.game.maps.World;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -14,13 +15,14 @@ import java.util.List;
 /**
  * Created by Josef Stroleny
  */
-public class Unit extends AEntity implements Runnable {
+public class Unit extends AEntity {
 	private final UnitAttributes unitAttributes;
 	private double speed;
 	private double health;
 	private List<UnitChange> effects;
 	private AI ai;
 	private double castSpeed;
+	private boolean hanging;
 
 	private long lastTick;
 
@@ -37,32 +39,20 @@ public class Unit extends AEntity implements Runnable {
 		this.actualSpell = unitAttributes.getSpells().isEmpty() ? -1 : 0;
 		this.lastTick = System.currentTimeMillis();
 		this.effects = new ArrayList<>();
+		this.hanging = false;
 	}
 
-	@Override
-	public void run() {
-		/* TODO
-		restore();
-		for (int i = 0; i < effects.size(); i++) {
-			if (effects.get(i).nextStep()) {
-				effects.remove(i);
-				i--;
-			}
-			else {
-				effects.get(i).apply();
-			}
-		}
-		if (!isCanCastNow()) stopCast(World.getInstance());
-		
-		if (ai != null) ai.tick(this, World.getInstance());
-		*/
+	public void run(World world) {
+		//if (ai != null) ai.step(this, world);
 	}
 
-	public void tick() {
+	public AEntity tick() {
 		for (int i = 0; i < effects.size(); i++) {
 			boolean delete = effects.get(i).tick(this);
 			if (delete) effects.remove(i--);
 		}
+		lastTick = System.nanoTime();
+		return this.getHealth() >  0 ? this : null;
 	}
 
 	@Override
@@ -72,26 +62,28 @@ public class Unit extends AEntity implements Runnable {
 			g.fillRect((int) getPositionX(), (int) getPositionY(), (int) getSizeX(), (int) getSizeY());
 		}
 		else {
-			g.drawImage(unitAttributes.getImage(), (int) getPositionX(), (int) getPositionY(), (int) getSizeX(), (int) getSizeY(), null);
+			if (!hanging) g.drawImage(unitAttributes.getImage(), (int) getPositionX(), (int) getPositionY(), (int) getSizeX(), (int) getSizeY(), null);
+			else g.drawImage(unitAttributes.getImage(), (int) (getPositionX() + getSizeX()), (int) (getPositionY() + getSizeY()),
+					(int) -getSizeX(), (int) -getSizeY(), null);
 		}
 	}
 
 	public void drawHealthBar(Graphics2D g) {
 		int startX = (int) getPositionX();
 		int sizeX = (int) getSizeX();
-		int startY = (int) (getPositionY() + getSizeY()) + Settings.HEALTH_BAR_SPACE;
-		g.drawRect(startX, startY, sizeX, Settings.HEALTH_BAR_HEIGHT);
+		int startY = (int) (getPositionY() + getSizeY()) + GameSettings.HEALTH_BAR_SPACE;
+		g.drawRect(startX, startY, sizeX, GameSettings.HEALTH_BAR_HEIGHT);
 		int length = (int) ((health / unitAttributes.getHealth()) * sizeX);
-		g.fillRect(startX, startY, length, Settings.HEALTH_BAR_HEIGHT);
+		g.fillRect(startX, startY, length, GameSettings.HEALTH_BAR_HEIGHT);
 	}
 
 	public void drawSpellBar(Graphics2D g) {
 		int startX = (int) getPositionX();
 		int sizeX = (int) getSizeX();
-		int startY = (int) (getPositionY() + getSizeY()) + Settings.SPELL_BAR_SPACE;
-		g.drawRect(startX, startY, sizeX, Settings.SPELL_BAR_HEIGHT);
+		int startY = (int) (getPositionY() + getSizeY()) + GameSettings.SPELL_BAR_SPACE;
+		g.drawRect(startX, startY, sizeX, GameSettings.SPELL_BAR_HEIGHT);
 		int length = (int) ((castTime / SpellFactory.getSpellAttributes(actualSpell).getCastTime()) * sizeX);
-		g.fillRect(startX, startY, length, Settings.SPELL_BAR_HEIGHT);
+		g.fillRect(startX, startY, length, GameSettings.SPELL_BAR_HEIGHT);
 	}
 
 	@Override
@@ -118,10 +110,6 @@ public class Unit extends AEntity implements Runnable {
 		castTime = 0;
 	}
 
-	public void changeSpell(int newSpell) {
-		actualSpell = unitAttributes.getSpells().contains(newSpell) ? newSpell : actualSpell;
-	}
-
 	public void scrollSpell(boolean up) {
 		stopCast();
 		List<Integer> spellList = new ArrayList<>(unitAttributes.getSpells());
@@ -141,6 +129,10 @@ public class Unit extends AEntity implements Runnable {
 
 	public int getActualSpell() {
 		return actualSpell;
+	}
+
+	public void setSpell(int newSpell) {
+		actualSpell = unitAttributes.getSpells().contains(newSpell) ? newSpell : actualSpell;
 	}
 
 	public double getSpeed() { return speed; }
@@ -182,4 +174,8 @@ public class Unit extends AEntity implements Runnable {
 	}
 
 	public void setLastTick(long lastTick) { this.lastTick = lastTick; }
+
+	public boolean isHanging() { return this.hanging; }
+
+	public void setHanging(boolean hanging) { this.hanging = hanging; }
 }

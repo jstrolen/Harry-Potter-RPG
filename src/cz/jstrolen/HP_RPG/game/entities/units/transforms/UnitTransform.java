@@ -9,23 +9,24 @@ import java.util.Set;
  * Created by Josef Stroleny
  */
 public class UnitTransform extends AInfo {
-    private final Set<Integer> EFFECTS;
+    private final Set<Integer> STARTER_EFFECTS_ID;
     private final List<UnitTransformEffect> UNIT_EFFECTS;
-    private final Set<Integer> EXCLUDES;
+    private final Set<Integer> EXCLUDED_UNITS;
 
-    public UnitTransform(int id, String name, String title, String description, Set<Integer> effects, List<UnitTransformEffect> unitEffects, Set<Integer> excludes) {
+    public UnitTransform(int id, String name, String title, String description, Set<Integer> starterEffectIds, List<UnitTransformEffect> unitEffects,
+                         Set<Integer> excludedUnits) {
         super(id, name, title, description);
-        this.EFFECTS = effects;
+        this.STARTER_EFFECTS_ID = starterEffectIds;
         this.UNIT_EFFECTS = unitEffects;
-        this.EXCLUDES = excludes;
+        this.EXCLUDED_UNITS = excludedUnits;
     }
 
-    public Set<Integer> getEffects() {
-        return EFFECTS;
+    public Set<Integer> getStarterEffectsIds() {
+        return STARTER_EFFECTS_ID;
     }
 
-    public Set<Integer> getExcludes() {
-        return EXCLUDES;
+    public Set<Integer> getExcludedUnits() {
+        return EXCLUDED_UNITS;
     }
 
     public List<UnitTransformEffect> getUnitEffects() {

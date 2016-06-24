@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  * Created by Josef Stroleny
  */
-public class Settings {
+public class GameSettings {
     public static final int INTERSECTION_STEPS = 5;
 
     public static final boolean DRAW_HEALTH_BAR = true;
